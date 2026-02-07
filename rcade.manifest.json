@@ -2,7 +2,7 @@
   "$schema": "https://rcade.dev/manifest.schema.json",
   "name": "bullet-storm",
   "display_name": "Bullet Storm",
-  "description": "Dodge them all, if you can.",
+  "description": "Dodge them all.",
   "visibility": "public",
   "authors": [
     {
