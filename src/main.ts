@@ -1,37 +1,19 @@
-import './style.css'
-import { PLAYER_1, SYSTEM } from '@rcade/plugin-input-classic'
+import "./style.css";
+import { PLAYER_1, SYSTEM } from "@rcade/plugin-input-classic";
+import { setGameLoop, SCREEN } from "./canvas";
 
-const app = document.querySelector<HTMLDivElement>('#app')!
-app.innerHTML = `
-  <h1>Bullet Storm</h1>
-  <p id="status">Press 1P START</p>
-  <div id="controls"></div>
-`
+const position = { x: SCREEN.WIDTH / 2, y: SCREEN.HEIGHT / 2 };
 
-const status = document.querySelector<HTMLParagraphElement>('#status')!
-const controls = document.querySelector<HTMLDivElement>('#controls')!
+setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
+  const speed = getFrameTimeNormalizedNum(Math.sqrt(2));
 
-let gameStarted = false
+  if (PLAYER_1.DPAD.up) position.y -= speed;
+  if (PLAYER_1.DPAD.down) position.y += speed;
+  if (PLAYER_1.DPAD.left) position.x -= speed;
+  if (PLAYER_1.DPAD.right) position.x += speed;
 
-function update() {
-    if (!gameStarted) {
-        if (SYSTEM.ONE_PLAYER) {
-            gameStarted = true
-            status.textContent = 'Game Started!'
-        }
-    } else {
-        const inputs: string[] = []
-        if (PLAYER_1.DPAD.up) inputs.push('↑')
-        if (PLAYER_1.DPAD.down) inputs.push('↓')
-        if (PLAYER_1.DPAD.left) inputs.push('←')
-        if (PLAYER_1.DPAD.right) inputs.push('→')
-        if (PLAYER_1.A) inputs.push('A')
-        if (PLAYER_1.B) inputs.push('B')
+  context.fillStyle = "#fff";
+  context.fillText("hello world", 8, 16);
 
-        controls.textContent = inputs.length > 0 ? inputs.join(' ') : '-'
-    }
-
-    requestAnimationFrame(update)
-}
-
-update()
+  context.fillRect(Math.floor(position.x), Math.floor(position.y), 10, 10);
+});
