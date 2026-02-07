@@ -1,0 +1,18 @@
+{
+  "$schema": "https://rcade.dev/manifest.schema.json",
+  "name": "bullet-storm",
+  "display_name": "Bullet Storm",
+  "description": "Dodge them all, if you can.",
+  "visibility": "public",
+  "authors": [
+    {
+      "display_name": "Evan Conway"
+    }
+  ],
+  "dependencies": [
+    {
+      "name": "@rcade/input-classic",
+      "version": "1.0.0"
+    }
+  ]
+}
