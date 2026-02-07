@@ -25,6 +25,8 @@ let gamePhase: 0 | 1 | 2 = 0;
 const GAME_OVER_SCREEN_TIME = 60 * 4;
 let gameOverTime = 0;
 
+const PLAYER_SPEED = 3; // integer value for traveling at 45 degree angle
+
 setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
   if (gamePhase === 0) {
     context.fillStyle = "#09FF00";
@@ -45,7 +47,9 @@ setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
 
     drawPlayerBox(context);
   } else if (gamePhase === 1) {
-    const speed = getFrameTimeNormalizedNum(Math.sqrt(8));
+    const speed = getFrameTimeNormalizedNum(
+      Math.sqrt(Math.pow(PLAYER_SPEED, 2) / 2),
+    );
 
     if (PLAYER_1.DPAD.up) position.y -= speed;
     if (PLAYER_1.DPAD.down) position.y += speed;
