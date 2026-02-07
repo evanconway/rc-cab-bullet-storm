@@ -16,6 +16,12 @@ interface BulletSimple {
   velocity: { x: number; y: number };
 }
 
+const dist = (positionA: Position, positionB: Position) =>
+  Math.sqrt(
+    Math.pow(positionA.x - positionB.x, 2) +
+      Math.pow(positionA.y - positionB.y, 2),
+  );
+
 class BulletGen {
   private bulletId: number;
   private bullets: Map<number, BulletSimple>;
@@ -96,12 +102,23 @@ class BulletGen {
     });
   }
 
+  clearAllBullets() {
+    this.bullets.clear();
+    this.bulletsHaveEnteredScreen.clear();
+  }
+
+  getBulletOverlapsPosition(position: Position, overlapDist = 3) {
+    return Array.from(this.bullets.entries()).reduce((result, [_, bullet]) => {
+      return result || dist(position, bullet.position) <= overlapDist;
+    }, false);
+  }
+
   genSimpleRandomEdgeBullet() {
     const newBullet: BulletSimple = {
       position: { x: 0, y: 0 },
       velocity: { x: 0, y: 0 },
     };
-    const speed = 2;
+    const speed = 1;
     const edge = this.getRandomScreenEdge();
     if (edge === 0) {
       // left
