@@ -6,6 +6,8 @@ const SCREEN_BUFFER_RIGHT = SCREEN.WIDTH + SCREEN_BUFFER;
 const SCREEN_BUFFER_TOP = SCREEN_BUFFER * -1;
 const SCREEN_BUFFER_BOTTOM = SCREEN.HEIGHT + SCREEN_BUFFER;
 
+const BULLET_RADIUS = 5;
+
 interface Position {
   x: number;
   y: number;
@@ -93,7 +95,7 @@ class BulletGen {
       context.arc(
         bullet.position.x,
         bullet.position.y,
-        5,
+        BULLET_RADIUS,
         0,
         Math.PI * 2,
         true,
@@ -109,7 +111,9 @@ class BulletGen {
 
   getBulletOverlapsPosition(position: Position, overlapDist = 3) {
     return Array.from(this.bullets.entries()).reduce((result, [_, bullet]) => {
-      return result || dist(position, bullet.position) <= overlapDist;
+      return (
+        result || dist(position, bullet.position) <= overlapDist + BULLET_RADIUS
+      );
     }, false);
   }
 

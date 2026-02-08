@@ -7,15 +7,11 @@ const bulletManager = new BulletGen();
 
 const position = { x: 0, y: 0 };
 
-const drawPlayerBox = (context: CanvasRenderingContext2D) => {
+const drawPlayer = (context: CanvasRenderingContext2D) => {
   context.fillStyle = "#fff";
-  const playerSize = 10;
-  context.fillRect(
-    Math.floor(position.x - playerSize / 2),
-    Math.floor(position.y - playerSize / 2),
-    10,
-    10,
-  );
+  context.beginPath();
+  context.arc(position.x, position.y, 5, 0, Math.PI * 2, true);
+  context.fill();
 };
 
 const BULLET_GEN_INTERVAL = 5;
@@ -45,7 +41,7 @@ setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
       bulletManager.clearAllBullets();
     }
 
-    drawPlayerBox(context);
+    drawPlayer(context);
   } else if (gamePhase === 1) {
     const speed = getFrameTimeNormalizedNum(
       Math.sqrt(Math.pow(PLAYER_SPEED, 2) / 2),
@@ -69,12 +65,12 @@ setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
     context.textAlign = "left";
     context.fillText(`bullets: ${bulletManager.getBulletCount()}`, 8, 16);
 
-    if (bulletManager.getBulletOverlapsPosition(position, 5)) {
+    if (bulletManager.getBulletOverlapsPosition(position, 1)) {
       gamePhase = 2;
       gameOverTime = 0;
     }
 
-    drawPlayerBox(context);
+    drawPlayer(context);
   } else if (gamePhase === 2) {
     bulletManager.draw(context);
 
@@ -82,7 +78,7 @@ setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
     context.textAlign = "left";
     context.fillText(`bullets: ${bulletManager.getBulletCount()}`, 8, 16);
 
-    drawPlayerBox(context);
+    drawPlayer(context);
 
     context.fillStyle = "#09FF00";
     context.textAlign = "center";
