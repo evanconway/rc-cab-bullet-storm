@@ -1,8 +1,10 @@
 import "./style.css";
 import { PLAYER_1, SYSTEM } from "@rcade/plugin-input-classic";
+import AppPhaseManager from "./appPhase";
 import { setGameLoop, SCREEN } from "./canvas";
 import BulletGen from "./bulletGen";
 
+const app = new AppPhaseManager();
 const bulletManager = new BulletGen();
 
 const position = { x: 0, y: 0 };
@@ -17,14 +19,13 @@ const drawPlayer = (context: CanvasRenderingContext2D) => {
 const BULLET_GEN_INTERVAL = 5;
 let bulletGenTime = 0;
 
-let gamePhase: 0 | 1 | 2 = 0;
 const GAME_OVER_SCREEN_TIME = 60 * 4;
 let gameOverTime = 0;
 
 const PLAYER_SPEED = 3; // integer value for traveling at 45 degree angle
 
 setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
-  if (gamePhase === 0) {
+  if (app.isPhaseStartGame()) {
     context.fillStyle = "#09FF00";
     context.textAlign = "center";
     context.fillText(
@@ -37,12 +38,12 @@ setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
     position.y = SCREEN.HEIGHT / 2;
 
     if (SYSTEM.ONE_PLAYER) {
-      gamePhase = 1;
+      app.advance();
       bulletManager.clearAllBullets();
     }
 
     drawPlayer(context);
-  } else if (gamePhase === 1) {
+  } else if (app.isPhasePlaying()) {
     const speed = getFrameTimeNormalizedNum(
       Math.sqrt(Math.pow(PLAYER_SPEED, 2) / 2),
     );
@@ -54,7 +55,7 @@ setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
 
     bulletGenTime += getFrameTimeNormalizedNum(1);
     if (bulletGenTime >= BULLET_GEN_INTERVAL) {
-      bulletManager.genSimpleRandomEdgeBullet();
+      bulletManager.addSimpleRandomEdgeBullet();
       bulletGenTime = 0;
     }
 
@@ -66,12 +67,12 @@ setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
     context.fillText(`bullets: ${bulletManager.getBulletCount()}`, 8, 16);
 
     if (bulletManager.getBulletOverlapsPosition(position, 1)) {
-      gamePhase = 2;
+      app.advance();
       gameOverTime = 0;
     }
 
     drawPlayer(context);
-  } else if (gamePhase === 2) {
+  } else if (app.isPhaseGameOver()) {
     bulletManager.draw(context);
 
     context.fillStyle = "#fff";
@@ -86,7 +87,7 @@ setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
 
     gameOverTime += getFrameTimeNormalizedNum(1);
     if (gameOverTime >= GAME_OVER_SCREEN_TIME) {
-      gamePhase = 0;
+      app.advance();
     }
   }
 });

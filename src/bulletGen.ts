@@ -117,13 +117,21 @@ class BulletGen {
     }, false);
   }
 
-  genSimpleRandomEdgeBullet() {
+  /**
+   * Number correlates to edge.
+   * 0: left
+   * 1: top
+   * 2: right
+   * 3: bottom
+   *
+   * @param edge
+   */
+  addSimpleEdgeBullet(edge: 0 | 1 | 2 | 3) {
     const newBullet: BulletSimple = {
       position: { x: 0, y: 0 },
       velocity: { x: 0, y: 0 },
     };
     const speed = 1;
-    const edge = this.getRandomScreenEdge();
     if (edge === 0) {
       // left
       newBullet.position.x = SCREEN_BUFFER * -1;
@@ -146,6 +154,11 @@ class BulletGen {
       newBullet.velocity.y = speed * -1;
     }
     this.addBullet(newBullet);
+  }
+
+  addSimpleRandomEdgeBullet() {
+    const edge = this.getRandomScreenEdge();
+    this.addSimpleEdgeBullet(edge);
   }
 }
 
