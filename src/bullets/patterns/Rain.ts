@@ -16,14 +16,22 @@ class PatternRain extends Pattern {
   private minRainVel: number;
   private maxRainVel: number;
 
-  constructor(duration: number, minVel: number, maxVel = minVel) {
+  constructor({
+    duration,
+    minVel,
+    maxVel,
+  }: {
+    duration: number;
+    minVel: number;
+    maxVel?: number;
+  }) {
     super();
     this.totalTime = duration;
     this.time = 0;
     this.generateInterval = 2;
     this.generateTime = 0;
     this.minRainVel = minVel;
-    this.maxRainVel = maxVel;
+    this.maxRainVel = maxVel ?? minVel;
   }
 
   public update(unit: number): void {

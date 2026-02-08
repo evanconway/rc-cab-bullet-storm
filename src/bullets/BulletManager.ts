@@ -26,8 +26,8 @@ class BulletManager {
     this.patternId += 1;
   }
 
-  updatePatterns(unit: number) {
-    this.patterns.forEach((p) => p.update(unit));
+  updatePatterns(unit: number, playerPosition: Position) {
+    this.patterns.forEach((p) => p.update(unit, playerPosition));
   }
 
   deletePatternsMarkedForDeletion() {

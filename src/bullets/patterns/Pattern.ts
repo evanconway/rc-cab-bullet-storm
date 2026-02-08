@@ -33,11 +33,11 @@ class Pattern {
     this.bullets.delete(id);
   }
 
-  public getBulletCount() {
+  getBulletCount() {
     return this.bullets.size;
   }
 
-  public update(unit: number) {
+  update(unit: number, playerPosition: Position) {
     console.log("deafult pattern update invoked");
     throw new Error("default pattern update invoked, this should never happen");
   }

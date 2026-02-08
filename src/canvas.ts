@@ -19,8 +19,10 @@ export const setGameLoop = (
     const currentFrameTime = Date.now();
     ctx.clearRect(0, 0, SCREEN.WIDTH, SCREEN.HEIGHT);
 
-    const frametimePercentage =
-      (currentFrameTime - lastFrameTime) / defaultFrameTime;
+    // const frametimePercentage =
+    //   (currentFrameTime - lastFrameTime) / defaultFrameTime;
+
+    const frametimePercentage = 0.42; // just for debugging
 
     drawCallback({
       context: ctx,
