@@ -2,10 +2,10 @@ import "./style.css";
 import { PLAYER_1, SYSTEM } from "@rcade/plugin-input-classic";
 import AppPhaseManager from "./appPhase";
 import { setGameLoop, SCREEN } from "./canvas";
-import BulletGen from "./bulletGen";
+import bulletManager from "./bullets/BulletManager";
+import PatternRain from "./bullets/patterns/Rain";
 
 const app = new AppPhaseManager();
-const bulletManager = new BulletGen();
 
 const position = { x: 0, y: 0 };
 
@@ -15,15 +15,6 @@ const drawPlayer = (context: CanvasRenderingContext2D) => {
   context.arc(position.x, position.y, 5, 0, Math.PI * 2, true);
   context.fill();
 };
-
-let bulletGenInterval = 10;
-let bulletGenTime = 0;
-
-let bulletGenIntervalMod = 1; // decreasing increases frequency (difficulty)
-
-const GAME_PHASE_TIME = 60 * 15;
-let gamePhaseTimeCurrent = 0;
-let gamePhase = 0;
 
 const GAME_OVER_SCREEN_TIME = 60 * 3;
 let gameOverTime = 0;
@@ -44,11 +35,9 @@ setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
     position.y = SCREEN.HEIGHT / 2;
 
     if (SYSTEM.ONE_PLAYER) {
+      bulletManager.clear;
+      bulletManager.addPattern(new PatternRain(500, 2));
       app.advance();
-      bulletManager.clearAllBullets();
-      gamePhase = 0;
-      bulletGenTime = 0;
-      gamePhaseTimeCurrent = 0;
     }
 
     drawPlayer(context);
@@ -62,47 +51,14 @@ setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
     if (PLAYER_1.DPAD.left) position.x -= speed;
     if (PLAYER_1.DPAD.right) position.x += speed;
 
-    bulletGenTime += getFrameTimeNormalizedNum(1);
-    gamePhaseTimeCurrent += getFrameTimeNormalizedNum(1);
-
-    if (gamePhaseTimeCurrent < GAME_PHASE_TIME) {
-      if (gamePhase === 0) {
-        bulletGenInterval = 6;
-        if (bulletGenTime >= bulletGenInterval * bulletGenIntervalMod) {
-          bulletManager.addSimpleEdgeBullet(1);
-          bulletGenTime = 0;
-        }
-      } else if (gamePhase === 1) {
-        bulletGenInterval = 9;
-        if (bulletGenTime >= bulletGenInterval * bulletGenIntervalMod) {
-          bulletManager.addSimpleEdgeBullet(0);
-          bulletManager.addSimpleEdgeBullet(2);
-          bulletGenTime = 0;
-        }
-      } else if (gamePhase === 2) {
-        bulletGenInterval = 5;
-        if (bulletGenTime >= bulletGenInterval * bulletGenIntervalMod) {
-          bulletManager.addSimpleRandomEdgeBullet();
-          bulletGenTime = 0;
-        }
-      }
-    } else if (bulletManager.getBulletCount() <= 0) {
-      gamePhase += 1;
-      gamePhaseTimeCurrent = 0;
-      if (gamePhase >= 3) {
-        gamePhase = 0;
-        bulletGenIntervalMod *= 0.7;
-      }
-    }
-
-    bulletManager.update(getFrameTimeNormalizedNum(1));
-    bulletManager.draw(context);
-
     context.fillStyle = "#fff";
     context.textAlign = "left";
     context.fillText(`bullets: ${bulletManager.getBulletCount()}`, 8, 16);
 
-    if (bulletManager.getBulletOverlapsPosition(position, 1)) {
+    bulletManager.updatePatterns(getFrameTimeNormalizedNum(1));
+    bulletManager.draw(context);
+
+    if (bulletManager.bulletCollisionAt(position)) {
       app.advance();
       gameOverTime = 0;
     }
