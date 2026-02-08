@@ -2,6 +2,10 @@ import { PLAYER_1 } from "@rcade/plugin-input-classic";
 import type { Position } from "./bullets/patterns/Pattern";
 import { SCREEN } from "./canvas";
 
+const getCorrectedSpeed = (speed: number) => Math.sqrt(Math.pow(speed, 2) / 2);
+const SPEED_FAST = getCorrectedSpeed(3);
+const SPEED_SLOW = getCorrectedSpeed(1);
+
 class Player {
   private position: Position;
 
@@ -17,7 +21,8 @@ class Player {
     return this.position;
   }
 
-  updatePosition(speed: number) {
+  updatePosition(unit: number) {
+    const speed = (PLAYER_1.A ? SPEED_SLOW : SPEED_FAST) * unit;
     if (PLAYER_1.DPAD.up) this.position.y -= speed;
     if (PLAYER_1.DPAD.down) this.position.y += speed;
     if (PLAYER_1.DPAD.left) this.position.x -= speed;

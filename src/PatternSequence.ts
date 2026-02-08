@@ -18,7 +18,6 @@ class PatternSequence {
         speed: 1,
       }),
     ]);
-
     this.patterns.set(2000, [
       new PatternAimedVolley({
         duration: 1000,
@@ -62,7 +61,7 @@ class PatternSequence {
     this.patterns.set(5000, [
       new PatternRain({ duration: 10000, minVel: 1.5, generateInterval: 32 }),
     ]);
-    this.patterns.set(12000, [
+    this.patterns.set(9000, [
       new PatternMultiEdge({
         duration: 10000,
         frequency: 2000,
