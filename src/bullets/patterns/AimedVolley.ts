@@ -1,5 +1,4 @@
-import { SCREEN } from "../../canvas";
-import Pattern from "./Pattern";
+import Pattern, { bulletIsOffScreen, bulletIsOnScreen } from "./Pattern";
 import type { Bullet, Position } from "./Pattern";
 
 interface AimedBullet extends Bullet {
@@ -73,22 +72,11 @@ class PatternAimedVolley extends Pattern {
       aimedBullet.position.x += aimedBullet.velocity.x * unit;
       aimedBullet.position.y += aimedBullet.velocity.y * unit;
 
-      if (
-        aimedBullet.position.x >= 0 &&
-        aimedBullet.position.x <= SCREEN.WIDTH &&
-        aimedBullet.position.y >= 0 &&
-        aimedBullet.position.y <= SCREEN.HEIGHT
-      ) {
+      if (bulletIsOnScreen(aimedBullet)) {
         aimedBullet.hasEnteredScreen = true;
       }
 
-      if (
-        aimedBullet.hasEnteredScreen &&
-        (aimedBullet.position.x < 0 ||
-          aimedBullet.position.x > SCREEN.WIDTH ||
-          aimedBullet.position.y < 0 ||
-          aimedBullet.position.y > SCREEN.HEIGHT)
-      ) {
+      if (aimedBullet.hasEnteredScreen && bulletIsOffScreen(aimedBullet)) {
         this.removeBullet(id);
       }
     });

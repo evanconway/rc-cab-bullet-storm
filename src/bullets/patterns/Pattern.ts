@@ -1,3 +1,5 @@
+import { SCREEN } from "../../canvas";
+
 export interface Position {
   x: number;
   y: number;
@@ -7,6 +9,32 @@ export interface Bullet {
   position: Position;
   radius: number;
 }
+
+export const bulletIsOnScreen = (bullet: Bullet) => {
+  const {
+    position: { x, y },
+    radius,
+  } = bullet;
+  return (
+    x > 0 - radius &&
+    x < SCREEN.WIDTH + radius &&
+    y > 0 - radius &&
+    y < SCREEN.HEIGHT + radius
+  );
+};
+
+export const bulletIsOffScreen = (bullet: Bullet) => {
+  const {
+    position: { x, y },
+    radius,
+  } = bullet;
+  return (
+    x < 0 - radius ||
+    x > SCREEN.WIDTH + radius ||
+    y < 0 - radius ||
+    y > SCREEN.HEIGHT + radius
+  );
+};
 
 const dist = (positionA: Position, positionB: Position) =>
   Math.sqrt(

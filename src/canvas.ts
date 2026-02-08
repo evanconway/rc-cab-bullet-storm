@@ -1,4 +1,12 @@
-export const SCREEN = { WIDTH: 336, HEIGHT: 262 } as const;
+const width = 336;
+const height = 262;
+export const SCREEN = {
+  WIDTH: width,
+  HEIGHT: height,
+  WIDTH_CENTER: width / 2,
+  HEIGHT_CENTER: height / 2,
+  BUFFER: 16,
+} as const;
 
 const canvas = document.querySelector<HTMLCanvasElement>("#canvas")!;
 canvas.setAttribute("width", String(SCREEN.WIDTH));

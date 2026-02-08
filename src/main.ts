@@ -5,6 +5,7 @@ import { setGameLoop, SCREEN } from "./canvas";
 import bulletManager from "./bullets/BulletManager";
 import PatternRain from "./bullets/patterns/Rain";
 import PatternAimedVolley from "./bullets/patterns/AimedVolley";
+import PatternSingle from "./bullets/patterns/Single";
 
 const app = new AppPhaseManager();
 
@@ -48,6 +49,14 @@ setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
           generateInterval: 7,
         }),
       );
+      bulletManager.addPattern(
+        new PatternSingle({
+          origin: { x: SCREEN.WIDTH_CENTER, y: 0 - 30 },
+          target: { x: SCREEN.WIDTH_CENTER, y: SCREEN.HEIGHT },
+          radius: 30,
+          speed: 1,
+        }),
+      );
       app.advance();
     }
 
@@ -61,6 +70,16 @@ setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
     if (PLAYER_1.DPAD.down) position.y += speed;
     if (PLAYER_1.DPAD.left) position.x -= speed;
     if (PLAYER_1.DPAD.right) position.x += speed;
+
+    position.x = Math.min(
+      Math.max(position.x, SCREEN.BUFFER),
+      SCREEN.WIDTH - SCREEN.BUFFER,
+    );
+
+    position.y = Math.min(
+      Math.max(position.y, SCREEN.BUFFER),
+      SCREEN.HEIGHT - SCREEN.BUFFER,
+    );
 
     context.fillStyle = "#fff";
     context.textAlign = "left";
