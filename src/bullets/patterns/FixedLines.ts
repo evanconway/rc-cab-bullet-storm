@@ -1,14 +1,13 @@
-import { SCREEN } from "../../canvas";
-import Pattern, {
-  bulletIsOffScreen,
-  bulletIsOnScreen,
-  getUnitVectorComponents,
+import {
   isScreenEdgeBottom,
   isScreenEdgeLeft,
   isScreenEdgeRight,
   isScreenEdgeTop,
-} from "./Pattern";
-import type { Bullet, Position, ScreenEdge } from "./Pattern";
+  SCREEN,
+  type ScreenEdge,
+} from "../../canvas";
+import Pattern, { bulletIsOffScreen, bulletIsOnScreen } from "./Pattern";
+import type { Bullet } from "./Pattern";
 
 interface PatternBullet extends Bullet {
   velocity: { x: number; y: number };

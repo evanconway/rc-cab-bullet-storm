@@ -2,10 +2,9 @@ import PatternAimedVolley from "./bullets/patterns/AimedVolley";
 import PatternFixedLines from "./bullets/patterns/FixedLines";
 import PatternMultiEdge from "./bullets/patterns/MultiEdge";
 import type Pattern from "./bullets/patterns/Pattern";
-import { SCREEN_EDGES } from "./bullets/patterns/Pattern";
 import PatternRain from "./bullets/patterns/Rain";
 import PatternSingle from "./bullets/patterns/Single";
-import { SCREEN } from "./canvas";
+import { SCREEN, SCREEN_EDGES } from "./canvas";
 
 class PatternSequence {
   private patterns: Map<number, Pattern[]>;
@@ -71,7 +70,7 @@ class PatternSequence {
         speed: 0.8,
       }),
     ]);
-    this.patterns.set(16000, [
+    this.patterns.set(19000, [
       new PatternFixedLines({
         duration: 5000,
         rowSpacing: SCREEN.WIDTH / 4,
@@ -82,7 +81,7 @@ class PatternSequence {
         edge: SCREEN_EDGES.TOP,
       }),
       new PatternFixedLines({
-        duration: 10000,
+        duration: 5000,
         rowSpacing: SCREEN.WIDTH / 5,
         offset: 15,
         frequency: 300,
@@ -91,7 +90,7 @@ class PatternSequence {
         edge: SCREEN_EDGES.BOTTOM,
       }),
       new PatternFixedLines({
-        duration: 10000,
+        duration: 5000,
         rowSpacing: SCREEN.WIDTH / 5,
         offset: 15,
         frequency: 300,
@@ -100,7 +99,7 @@ class PatternSequence {
         edge: SCREEN_EDGES.LEFT,
       }),
       new PatternFixedLines({
-        duration: 10000,
+        duration: 5000,
         rowSpacing: SCREEN.WIDTH / 5,
         offset: 7,
         frequency: 300,

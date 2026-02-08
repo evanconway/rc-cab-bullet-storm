@@ -1,13 +1,15 @@
-import { SCREEN } from "../../canvas";
-import Pattern, {
-  bulletIsOffScreen,
-  bulletIsOnScreen,
+import {
   getRandomScreenEdge,
-  getUnitVectorComponents,
   isScreenEdgeBottom,
   isScreenEdgeLeft,
   isScreenEdgeRight,
   isScreenEdgeTop,
+  SCREEN,
+} from "../../canvas";
+import Pattern, {
+  bulletIsOffScreen,
+  bulletIsOnScreen,
+  getUnitVectorComponents,
 } from "./Pattern";
 import type { Bullet, Position } from "./Pattern";
 

@@ -46,27 +46,6 @@ export const getUnitVectorComponents = (origin: Position, target: Position) => {
   };
 };
 
-export type ScreenEdge = 0 | 1 | 2 | 3;
-
-export const SCREEN_EDGES = {
-  TOP: 0,
-  BOTTOM: 1,
-  LEFT: 2,
-  RIGHT: 3,
-} as const;
-
-export const getRandomScreenEdge = () =>
-  Math.floor(Math.random() * 4) as ScreenEdge;
-
-export const isScreenEdgeTop = (screenEdge: ScreenEdge) =>
-  screenEdge === SCREEN_EDGES.TOP;
-export const isScreenEdgeBottom = (screenEdge: ScreenEdge) =>
-  screenEdge === SCREEN_EDGES.BOTTOM;
-export const isScreenEdgeLeft = (screenEdge: ScreenEdge) =>
-  screenEdge === SCREEN_EDGES.LEFT;
-export const isScreenEdgeRight = (screenEdge: ScreenEdge) =>
-  screenEdge === SCREEN_EDGES.RIGHT;
-
 const dist = (positionA: Position, positionB: Position) =>
   Math.sqrt(
     Math.pow(positionA.x - positionB.x, 2) +
