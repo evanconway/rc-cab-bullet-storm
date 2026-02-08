@@ -81,6 +81,10 @@ class Pattern {
   }
 
   canDelete() {
+    console.log("default pattern canDelete invoked");
+    throw new Error(
+      "default pattern canDelete invoked, this should never happen",
+    );
     return true;
   }
 

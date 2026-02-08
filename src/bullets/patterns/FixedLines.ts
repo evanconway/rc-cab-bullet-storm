@@ -132,6 +132,10 @@ class PatternFixedLines extends Pattern {
       }
     });
   }
+
+  canDelete(): boolean {
+    return this.bullets.size <= 0 && this.time >= this.duration;
+  }
 }
 
 export default PatternFixedLines;

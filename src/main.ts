@@ -55,9 +55,14 @@ setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
       getFrameTimeNormalizedNum(1),
       player.getPosition(),
     );
+    bulletManager.deletePatternsMarkedForDeletion();
     bulletManager.draw(context);
 
     if (bulletManager.bulletCollisionAt(player.getPosition())) {
+      app.setPhaseGameOver();
+    }
+
+    if (patternSequence.getComplete() && bulletManager.getPatternCount() <= 0) {
       app.setPhaseGameOver();
     }
 
@@ -65,13 +70,21 @@ setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
 
     context.fillStyle = "#fff";
     context.textAlign = "left";
-    context.fillText(`bullets: ${bulletManager.getBulletCount()}`, 8, 16);
+    context.fillText(
+      `bullets: ${bulletManager.getBulletCount()}, patterns: ${bulletManager.getPatternCount()}`,
+      8,
+      16,
+    );
   } else if (app.isPhaseGameOver()) {
     bulletManager.draw(context);
 
     context.fillStyle = "#fff";
     context.textAlign = "left";
-    context.fillText(`bullets: ${bulletManager.getBulletCount()}`, 8, 16);
+    context.fillText(
+      `bullets: ${bulletManager.getBulletCount()}, patterns: ${bulletManager.getPatternCount()}`,
+      8,
+      16,
+    );
 
     player.draw(context);
 

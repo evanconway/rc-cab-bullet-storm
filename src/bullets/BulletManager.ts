@@ -38,6 +38,10 @@ class BulletManager {
     });
   }
 
+  getPatternCount() {
+    return this.patterns.size;
+  }
+
   bulletCollisionAt(position: Position) {
     return Array.from(this.patterns.entries()).reduce(
       (result, [, pattern]) => result || pattern.bulletCollisionAt(position),

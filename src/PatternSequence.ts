@@ -126,6 +126,10 @@ class PatternSequence {
     }
     return foundPatterns;
   }
+
+  getComplete() {
+    return this.patterns.size <= 0;
+  }
 }
 
 export default PatternSequence;
