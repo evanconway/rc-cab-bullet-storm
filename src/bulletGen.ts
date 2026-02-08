@@ -160,6 +160,51 @@ class BulletGen {
     const edge = this.getRandomScreenEdge();
     this.addSimpleEdgeBullet(edge);
   }
+
+  addSimpleAimedBullet(edge: 0 | 1 | 2 | 3, aim: Position) {
+    const newBullet: BulletSimple = {
+      position: { x: 0, y: 0 },
+      velocity: { x: 0, y: 0 },
+    };
+    edge = 0;
+    if (edge === 0) {
+      // left
+      newBullet.position.x = SCREEN_BUFFER * -1;
+      newBullet.position.y = Math.random() * SCREEN.HEIGHT;
+    } else if (edge === 1) {
+      // top
+      newBullet.position.x = Math.random() * SCREEN.WIDTH;
+      newBullet.position.y = SCREEN_BUFFER * -1;
+    } else if (edge === 2) {
+      // right
+      newBullet.position.x = SCREEN.WIDTH + SCREEN_BUFFER;
+      newBullet.position.y = Math.random() * SCREEN.HEIGHT;
+    } else if (edge === 3) {
+      // bottom
+      newBullet.position.x = Math.random() * SCREEN.WIDTH;
+      newBullet.position.y = SCREEN.HEIGHT + SCREEN_BUFFER;
+    }
+
+    //aim
+    const velX = aim.x - newBullet.position.x;
+    const velY = aim.y - newBullet.position.y;
+
+    const magnitude = Math.sqrt(Math.pow(velX, 2) + Math.pow(velY, 2));
+
+    const unitVectorX = velX / magnitude;
+    const unitVectorY = velY / magnitude;
+
+    const speed = 2;
+    newBullet.velocity.x = unitVectorX * speed;
+    newBullet.velocity.y = unitVectorY * speed;
+
+    this.addBullet(newBullet);
+  }
+
+  addSimpleRandomEdgeAimedBullet(aim: Position) {
+    const edge = this.getRandomScreenEdge();
+    this.addSimpleAimedBullet(edge, aim);
+  }
 }
 
 export default BulletGen;
