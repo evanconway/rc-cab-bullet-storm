@@ -16,10 +16,16 @@ const drawPlayer = (context: CanvasRenderingContext2D) => {
   context.fill();
 };
 
-const BULLET_GEN_INTERVAL = 5;
+let bulletGenInterval = 10;
 let bulletGenTime = 0;
 
-const GAME_OVER_SCREEN_TIME = 60 * 4;
+let bulletGenIntervalMod = 1; // decreasing increases frequency (difficulty)
+
+const GAME_PHASE_TIME = 60 * 15;
+let gamePhaseTimeCurrent = 0;
+let gamePhase = 0;
+
+const GAME_OVER_SCREEN_TIME = 60 * 3;
 let gameOverTime = 0;
 
 const PLAYER_SPEED = 3; // integer value for traveling at 45 degree angle
@@ -54,9 +60,36 @@ setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
     if (PLAYER_1.DPAD.right) position.x += speed;
 
     bulletGenTime += getFrameTimeNormalizedNum(1);
-    if (bulletGenTime >= BULLET_GEN_INTERVAL) {
-      bulletManager.addSimpleRandomEdgeBullet();
-      bulletGenTime = 0;
+    gamePhaseTimeCurrent += getFrameTimeNormalizedNum(1);
+
+    if (gamePhaseTimeCurrent < GAME_PHASE_TIME) {
+      if (gamePhase === 0) {
+        bulletGenInterval = 6;
+        if (bulletGenTime >= bulletGenInterval * bulletGenIntervalMod) {
+          bulletManager.addSimpleEdgeBullet(1);
+          bulletGenTime = 0;
+        }
+      } else if (gamePhase === 1) {
+        bulletGenInterval = 9;
+        if (bulletGenTime >= bulletGenInterval * bulletGenIntervalMod) {
+          bulletManager.addSimpleEdgeBullet(0);
+          bulletManager.addSimpleEdgeBullet(2);
+          bulletGenTime = 0;
+        }
+      } else if (gamePhase === 2) {
+        bulletGenInterval = 5;
+        if (bulletGenTime >= bulletGenInterval * bulletGenIntervalMod) {
+          bulletManager.addSimpleRandomEdgeBullet();
+          bulletGenTime = 0;
+        }
+      }
+    } else if (bulletManager.getBulletCount() <= 0) {
+      gamePhase += 1;
+      gamePhaseTimeCurrent = 0;
+      if (gamePhase >= 3) {
+        gamePhase = 0;
+        bulletGenIntervalMod *= 0.7;
+      }
     }
 
     bulletManager.update(getFrameTimeNormalizedNum(1));
