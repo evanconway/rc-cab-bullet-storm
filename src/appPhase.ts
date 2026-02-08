@@ -36,4 +36,4 @@ class AppPhaseManager {
   }
 }
 
-export default AppPhaseManager;
+export default new AppPhaseManager();

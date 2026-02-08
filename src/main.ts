@@ -1,14 +1,12 @@
 import "./style.css";
 import { SYSTEM } from "@rcade/plugin-input-classic";
 import player from "./player";
-import AppPhaseManager from "./appPhase";
+import app from "./appPhase";
 import { setGameLoop, SCREEN } from "./canvas";
 import bulletManager from "./bullets/BulletManager";
 import PatternRain from "./bullets/patterns/Rain";
 import PatternAimedVolley from "./bullets/patterns/AimedVolley";
 import PatternSingle from "./bullets/patterns/Single";
-
-const app = new AppPhaseManager();
 
 const GAME_OVER_SCREEN_TIME = 60 * 3;
 let gameOverTime = 0;
