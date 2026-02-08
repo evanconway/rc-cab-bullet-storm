@@ -6,7 +6,7 @@ import Pattern, {
 } from "./Pattern";
 import type { Bullet, Position } from "./Pattern";
 
-const TARGET_RANDOM_MOD = 20;
+const TARGET_RANDOM_MOD = SCREEN.WIDTH * 0.7;
 
 interface PatternBullet extends Bullet {
   velocity: { x: number; y: number };
@@ -43,6 +43,7 @@ class PatternMultiEdge extends Pattern {
 
   update(frameTime: number, unit: number): void {
     this.time += frameTime;
+    this.generateTime += frameTime;
     while (this.time <= this.duration && this.generateTime >= this.frequency) {
       this.generateTime -= this.frequency;
 
@@ -67,27 +68,27 @@ class PatternMultiEdge extends Pattern {
       const edge = Math.floor(Math.random() * 4);
       if (edge === 0) {
         // left
-        newBullet.position.x = SCREEN.BUFFER * -1;
+        newBullet.position.x = this.radius * -1;
         newBullet.position.y = Math.random() * SCREEN.HEIGHT;
       } else if (edge === 1) {
         // right
-        newBullet.position.x = SCREEN.BUFFER;
+        newBullet.position.x = SCREEN.WIDTH + this.radius;
         newBullet.position.y = Math.random() * SCREEN.HEIGHT;
       } else if (edge === 2) {
         // top
         newBullet.position.x = Math.random() * SCREEN.WIDTH;
-        newBullet.position.y = SCREEN.BUFFER * -1;
+        newBullet.position.y = this.radius * -1;
       } else if (edge === 3) {
         // bottom
         newBullet.position.x = Math.random() * SCREEN.WIDTH;
-        newBullet.position.y = SCREEN.BUFFER;
+        newBullet.position.y = SCREEN.HEIGHT + this.radius;
       }
       const { unitVectorX, unitVectorY } = getUnitVectorComponents(
         newBullet.position,
         randomTarget,
       );
-      newBullet.velocity.x = unitVectorX;
-      newBullet.velocity.y = unitVectorY;
+      newBullet.velocity.x = unitVectorX * this.speed;
+      newBullet.velocity.y = unitVectorY * this.speed;
       this.addBullet(newBullet);
     }
 
@@ -107,7 +108,7 @@ class PatternMultiEdge extends Pattern {
   }
 
   canDelete(): boolean {
-    return this.bullets.size <= 0;
+    return this.bullets.size <= 0 && this.time >= this.duration;
   }
 
   draw(ctx: CanvasRenderingContext2D) {

@@ -1,4 +1,5 @@
 import PatternAimedVolley from "./bullets/patterns/AimedVolley";
+import PatternMultiEdge from "./bullets/patterns/MultiEdge";
 import type Pattern from "./bullets/patterns/Pattern";
 import PatternRain from "./bullets/patterns/Rain";
 import PatternSingle from "./bullets/patterns/Single";
@@ -60,6 +61,14 @@ class PatternSequence {
     ]);
     this.patterns.set(5000, [
       new PatternRain({ duration: 10000, minVel: 1.5, generateInterval: 32 }),
+    ]);
+    this.patterns.set(12000, [
+      new PatternMultiEdge({
+        duration: 10000,
+        frequency: 2000,
+        radius: 50,
+        speed: 0.8,
+      }),
     ]);
   }
 
