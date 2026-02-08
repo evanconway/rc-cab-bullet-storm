@@ -46,7 +46,7 @@ export const getUnitVectorComponents = (origin: Position, target: Position) => {
   };
 };
 
-type ScreenEdge = 0 | 1 | 2 | 3;
+export type ScreenEdge = 0 | 1 | 2 | 3;
 
 export const getRandomScreenEdge = () =>
   Math.floor(Math.random() * 4) as ScreenEdge;
