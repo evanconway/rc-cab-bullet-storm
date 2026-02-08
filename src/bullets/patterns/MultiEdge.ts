@@ -2,7 +2,12 @@ import { SCREEN } from "../../canvas";
 import Pattern, {
   bulletIsOffScreen,
   bulletIsOnScreen,
+  getRandomScreenEdge,
   getUnitVectorComponents,
+  isScreenEdgeBottom,
+  isScreenEdgeLeft,
+  isScreenEdgeRight,
+  isScreenEdgeTop,
 } from "./Pattern";
 import type { Bullet, Position } from "./Pattern";
 
@@ -65,20 +70,20 @@ class PatternMultiEdge extends Pattern {
           TARGET_RANDOM_MOD / 2,
       };
 
-      const edge = Math.floor(Math.random() * 4);
-      if (edge === 0) {
+      const edge = getRandomScreenEdge();
+      if (isScreenEdgeLeft(edge)) {
         // left
         newBullet.position.x = this.radius * -1;
         newBullet.position.y = Math.random() * SCREEN.HEIGHT;
-      } else if (edge === 1) {
+      } else if (isScreenEdgeRight(edge)) {
         // right
         newBullet.position.x = SCREEN.WIDTH + this.radius;
         newBullet.position.y = Math.random() * SCREEN.HEIGHT;
-      } else if (edge === 2) {
+      } else if (isScreenEdgeTop(edge)) {
         // top
         newBullet.position.x = Math.random() * SCREEN.WIDTH;
         newBullet.position.y = this.radius * -1;
-      } else if (edge === 3) {
+      } else if (isScreenEdgeBottom(edge)) {
         // bottom
         newBullet.position.x = Math.random() * SCREEN.WIDTH;
         newBullet.position.y = SCREEN.HEIGHT + this.radius;
