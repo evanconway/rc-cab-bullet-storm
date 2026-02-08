@@ -37,13 +37,15 @@ setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
 
     if (SYSTEM.ONE_PLAYER) {
       bulletManager.clear();
-      bulletManager.addPattern(new PatternRain({ duration: 500, minVel: 2 }));
+      bulletManager.addPattern(
+        new PatternRain({ duration: 500, minVel: 1.5, generateInterval: 2 }),
+      );
       bulletManager.addPattern(
         new PatternAimedVolley({
           duration: 60,
           minVel: 3,
           origin: { x: -30, y: SCREEN.HEIGHT / 2 },
-          generateInterval: 5,
+          generateInterval: 7,
         }),
       );
       app.advance();

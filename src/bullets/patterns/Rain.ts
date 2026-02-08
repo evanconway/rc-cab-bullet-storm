@@ -20,15 +20,17 @@ class PatternRain extends Pattern {
     duration,
     minVel,
     maxVel,
+    generateInterval,
   }: {
     duration: number;
     minVel: number;
     maxVel?: number;
+    generateInterval: number;
   }) {
     super();
     this.totalTime = duration;
     this.time = 0;
-    this.generateInterval = 2;
+    this.generateInterval = generateInterval;
     this.generateTime = 0;
     this.minRainVel = minVel;
     this.maxRainVel = maxVel ?? minVel;
