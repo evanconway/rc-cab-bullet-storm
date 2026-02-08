@@ -8,19 +8,19 @@ const APP_PHASES = {
 
 class AppPhaseManager {
   private appPhase: AppPhase;
+  private phaseTime: number;
 
   constructor() {
     this.appPhase = APP_PHASES.START_GAME;
+    this.phaseTime = 0;
   }
 
-  advance() {
-    if (this.appPhase === APP_PHASES.START_GAME) {
-      this.appPhase = APP_PHASES.PLAYING;
-    } else if (this.appPhase === APP_PHASES.PLAYING) {
-      this.appPhase = APP_PHASES.GAME_OVER;
-    } else if (this.appPhase === APP_PHASES.GAME_OVER) {
-      this.appPhase = APP_PHASES.START_GAME;
-    }
+  getPhaseTime() {
+    return this.phaseTime;
+  }
+
+  increasePhaseTime(time: number) {
+    this.phaseTime += time;
   }
 
   isPhaseStartGame() {
@@ -33,6 +33,21 @@ class AppPhaseManager {
 
   isPhaseGameOver() {
     return this.appPhase === APP_PHASES.GAME_OVER;
+  }
+
+  setPhaseStartGame() {
+    this.appPhase = APP_PHASES.START_GAME;
+    this.phaseTime = 0;
+  }
+
+  setPhasePlaying() {
+    this.appPhase = APP_PHASES.PLAYING;
+    this.phaseTime = 0;
+  }
+
+  setPhaseGameOver() {
+    this.appPhase = APP_PHASES.GAME_OVER;
+    this.phaseTime = 0;
   }
 }
 

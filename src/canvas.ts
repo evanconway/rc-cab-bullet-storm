@@ -20,6 +20,7 @@ export const setGameLoop = (
   drawCallback: (params: {
     context: CanvasRenderingContext2D;
     getFrameTimeNormalizedNum: (num: number) => number;
+    frameTime: number;
   }) => void,
 ) => {
   let lastFrameTime = Date.now();
@@ -27,14 +28,14 @@ export const setGameLoop = (
     const currentFrameTime = Date.now();
     ctx.clearRect(0, 0, SCREEN.WIDTH, SCREEN.HEIGHT);
 
-    // const frametimePercentage =
-    //   (currentFrameTime - lastFrameTime) / defaultFrameTime;
-
-    const frametimePercentage = 0.42; // just for debugging
+    const frameTime = currentFrameTime - lastFrameTime;
+    const frametimePercentage = frameTime / defaultFrameTime;
+    // const frametimePercentage = 0.42; // just for debugging
 
     drawCallback({
       context: ctx,
       getFrameTimeNormalizedNum: (num: number) => num * frametimePercentage,
+      frameTime,
     });
     lastFrameTime = currentFrameTime;
     requestAnimationFrame(preparedCallback);

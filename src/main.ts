@@ -4,16 +4,23 @@ import player from "./player";
 import app from "./appPhase";
 import { setGameLoop, SCREEN } from "./canvas";
 import bulletManager from "./bullets/BulletManager";
-import PatternRain from "./bullets/patterns/Rain";
-import PatternAimedVolley from "./bullets/patterns/AimedVolley";
-import PatternSingle from "./bullets/patterns/Single";
+import PatternSequence from "./PatternSequence";
 
-const GAME_OVER_SCREEN_TIME = 60 * 3;
-let gameOverTime = 0;
+const GAME_OVER_SCREEN_TIME = 3000;
 
 const PLAYER_SPEED = 3; // integer value for traveling at 45 degree angle
 
-setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
+let patternSequence = new PatternSequence();
+
+setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
+  app.increasePhaseTime(frameTime);
+  context.fillStyle = "#09FF00";
+  context.textAlign = "left";
+  context.fillText(
+    `frame time: ${frameTime}, phase time: ${app.getPhaseTime()}`,
+    8,
+    8,
+  );
   if (app.isPhaseStartGame()) {
     context.fillStyle = "#09FF00";
     context.textAlign = "center";
@@ -27,26 +34,8 @@ setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
 
     if (SYSTEM.ONE_PLAYER) {
       bulletManager.clear();
-      bulletManager.addPattern(
-        new PatternRain({ duration: 500, minVel: 1.5, generateInterval: 2 }),
-      );
-      bulletManager.addPattern(
-        new PatternAimedVolley({
-          duration: 60,
-          minVel: 3,
-          origin: { x: -30, y: SCREEN.HEIGHT / 2 },
-          generateInterval: 7,
-        }),
-      );
-      bulletManager.addPattern(
-        new PatternSingle({
-          origin: { x: SCREEN.WIDTH_CENTER, y: 0 - 30 },
-          target: { x: SCREEN.WIDTH_CENTER, y: SCREEN.HEIGHT },
-          radius: 30,
-          speed: 1,
-        }),
-      );
-      app.advance();
+      patternSequence = new PatternSequence();
+      app.setPhasePlaying();
     }
 
     player.draw(context);
@@ -55,6 +44,12 @@ setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
       getFrameTimeNormalizedNum(Math.sqrt(Math.pow(PLAYER_SPEED, 2) / 2)),
     );
 
+    const newPatterns = patternSequence.getPatternsPassedTime(
+      app.getPhaseTime(),
+    );
+
+    newPatterns.forEach((p) => bulletManager.addPattern(p));
+
     bulletManager.updatePatterns(
       getFrameTimeNormalizedNum(1),
       player.getPosition(),
@@ -62,8 +57,7 @@ setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
     bulletManager.draw(context);
 
     if (bulletManager.bulletCollisionAt(player.getPosition())) {
-      app.advance();
-      gameOverTime = 0;
+      app.setPhaseGameOver();
     }
 
     player.draw(context);
@@ -84,9 +78,8 @@ setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
     context.textAlign = "center";
     context.fillText("game over", SCREEN.WIDTH_CENTER, SCREEN.HEIGHT_CENTER);
 
-    gameOverTime += getFrameTimeNormalizedNum(1);
-    if (gameOverTime >= GAME_OVER_SCREEN_TIME) {
-      app.advance();
+    if (app.getPhaseTime() >= GAME_OVER_SCREEN_TIME) {
+      app.setPhaseStartGame();
     }
   }
 });
