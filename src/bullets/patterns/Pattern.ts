@@ -36,6 +36,16 @@ export const bulletIsOffScreen = (bullet: Bullet) => {
   );
 };
 
+export const getUnitVectorComponents = (origin: Position, target: Position) => {
+  const rawVelX = target.x - origin.x;
+  const rawVelY = target.y - origin.y;
+  const magnitude = Math.sqrt(Math.pow(rawVelX, 2) + Math.pow(rawVelY, 2));
+  return {
+    unitVectorX: rawVelX / magnitude,
+    unitVectorY: rawVelY / magnitude,
+  };
+};
+
 const dist = (positionA: Position, positionB: Position) =>
   Math.sqrt(
     Math.pow(positionA.x - positionB.x, 2) +
@@ -65,8 +75,8 @@ class Pattern {
     return this.bullets.size;
   }
 
-  update(unit: number, playerPosition: Position) {
-    console.log("deafult pattern update invoked");
+  update(frametime: number, unit: number, playerPosition: Position) {
+    console.log("default pattern update invoked");
     throw new Error("default pattern update invoked, this should never happen");
   }
 

@@ -51,6 +51,7 @@ setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
     newPatterns.forEach((p) => bulletManager.addPattern(p));
 
     bulletManager.updatePatterns(
+      frameTime,
       getFrameTimeNormalizedNum(1),
       player.getPosition(),
     );

@@ -38,7 +38,7 @@ class PatternSingle extends Pattern {
     this.addBullet(bullet);
   }
 
-  update(unit: number): void {
+  update(frameTime: number, unit: number): void {
     this.bullets.forEach((bullet, id) => {
       const single = bullet as SingleBullet;
       single.position.x += single.velocity.x * unit;

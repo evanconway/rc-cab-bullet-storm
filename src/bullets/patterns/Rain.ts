@@ -36,9 +36,9 @@ class PatternRain extends Pattern {
     this.maxRainVel = maxVel ?? minVel;
   }
 
-  public update(unit: number): void {
-    this.time += unit;
-    this.generateTime += unit;
+  update(frameTime: number, unit: number): void {
+    this.time += frameTime;
+    this.generateTime += frameTime;
 
     while (
       this.time < this.totalTime &&

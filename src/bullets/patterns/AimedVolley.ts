@@ -9,7 +9,7 @@ interface AimedBullet extends Bullet {
 class PatternAimedVolley extends Pattern {
   private totalTime: number;
   private time: number;
-  private generateInterval: number;
+  private frequency: number;
   private generateTime: number;
   private minVel: number;
   private maxVel: number;
@@ -20,33 +20,30 @@ class PatternAimedVolley extends Pattern {
     minVel,
     maxVel,
     origin,
-    generateInterval,
+    frequency,
   }: {
     duration: number;
     minVel: number;
     maxVel?: number;
     origin: Position;
-    generateInterval: number;
+    frequency: number;
   }) {
     super();
     this.totalTime = duration;
     this.time = 0;
-    this.generateInterval = generateInterval;
+    this.frequency = frequency;
     this.generateTime = 0;
     this.minVel = minVel;
     this.maxVel = maxVel ?? minVel;
     this.origin = origin;
   }
 
-  update(unit: number, target: Position): void {
-    this.time += unit;
-    this.generateTime += unit;
+  update(frameTime: number, unit: number, target: Position): void {
+    this.time += frameTime;
+    this.generateTime += frameTime;
 
-    while (
-      this.time < this.totalTime &&
-      this.generateTime >= this.generateInterval
-    ) {
-      this.generateTime -= this.generateInterval;
+    while (this.time < this.totalTime && this.generateTime >= this.frequency) {
+      this.generateTime -= this.frequency;
 
       const rawVelX = target.x - this.origin.x;
       const rawVelY = target.y - this.origin.y;

@@ -20,46 +20,46 @@ class PatternSequence {
 
     this.patterns.set(2000, [
       new PatternAimedVolley({
-        duration: 60,
+        duration: 1000,
         minVel: 3,
         origin: { x: SCREEN.BUFFER * -1, y: SCREEN.HEIGHT * 0.2 },
-        generateInterval: 7,
+        frequency: 100,
       }),
     ]);
     this.patterns.set(2500, [
       new PatternAimedVolley({
-        duration: 60,
+        duration: 1000,
         minVel: 3,
         origin: { x: SCREEN.WIDTH + SCREEN.BUFFER, y: SCREEN.HEIGHT * 0.4 },
-        generateInterval: 7,
+        frequency: 100,
       }),
     ]);
     this.patterns.set(3000, [
       new PatternAimedVolley({
-        duration: 60,
+        duration: 1000,
         minVel: 3,
         origin: { x: SCREEN.BUFFER * -1, y: SCREEN.HEIGHT * 0.6 },
-        generateInterval: 7,
+        frequency: 100,
       }),
     ]);
     this.patterns.set(3500, [
       new PatternAimedVolley({
-        duration: 60,
+        duration: 1000,
         minVel: 3,
         origin: { x: SCREEN.WIDTH + SCREEN.BUFFER, y: SCREEN.HEIGHT * 0.8 },
-        generateInterval: 7,
+        frequency: 100,
       }),
     ]);
     this.patterns.set(4000, [
       new PatternAimedVolley({
-        duration: 60,
+        duration: 1000,
         minVel: 3,
         origin: { x: SCREEN.BUFFER * -1, y: SCREEN.HEIGHT * 1.0 },
-        generateInterval: 7,
+        frequency: 100,
       }),
     ]);
     this.patterns.set(5000, [
-      new PatternRain({ duration: 500, minVel: 1.5, generateInterval: 2 }),
+      new PatternRain({ duration: 10000, minVel: 1.5, generateInterval: 32 }),
     ]);
   }
 
