@@ -46,6 +46,9 @@ setGameLoop(({ context, getFrameTimeNormalizedNum }) => {
     if (SYSTEM.ONE_PLAYER) {
       app.advance();
       bulletManager.clearAllBullets();
+      gamePhase = 0;
+      bulletGenTime = 0;
+      gamePhaseTimeCurrent = 0;
     }
 
     drawPlayer(context);
