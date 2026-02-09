@@ -7,12 +7,12 @@ import bulletManager from "./bullets/BulletManager";
 import PatternSequence from "./PatternSequence";
 
 const GAME_OVER_SCREEN_TIME = 3000;
-
-const PLAYER_SPEED = 3; // integer value for traveling at 45 degree angle
-
+const SCORE_RATE = 100; // lower is faster
 let patternSequence = new PatternSequence();
 
 setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
+  const normalizedUnit = getFrameTimeNormalizedNum(1);
+
   app.increasePhaseTime(frameTime);
   context.fillStyle = "#09FF00";
   context.textAlign = "left";
@@ -40,9 +40,7 @@ setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
 
     player.draw(context);
   } else if (app.isPhasePlaying()) {
-    player.updatePosition(
-      getFrameTimeNormalizedNum(Math.sqrt(Math.pow(PLAYER_SPEED, 2) / 2)),
-    );
+    player.updatePosition(normalizedUnit);
 
     const newPatterns = patternSequence.getPatternsPassedTime(
       app.getPhaseTime(),
@@ -52,7 +50,7 @@ setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
 
     bulletManager.updatePatterns(
       frameTime,
-      getFrameTimeNormalizedNum(1),
+      normalizedUnit,
       player.getPosition(),
     );
     bulletManager.deletePatternsMarkedForDeletion();
@@ -64,8 +62,7 @@ setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
 
     if (closestBulletDist !== null) {
       app.scoreAdd(
-        (Math.max(0, 50 - closestBulletDist) * getFrameTimeNormalizedNum(1)) /
-          100,
+        (Math.max(0, 50 - closestBulletDist) * normalizedUnit) / SCORE_RATE,
       );
       if (closestBulletDist <= 0) {
         app.setPhaseGameOver();

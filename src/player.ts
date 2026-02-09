@@ -3,8 +3,8 @@ import type { Position } from "./bullets/patterns/Pattern";
 import { SCREEN } from "./canvas";
 
 const getCorrectedSpeed = (speed: number) => Math.sqrt(Math.pow(speed, 2) / 2);
-const SPEED_FAST = getCorrectedSpeed(3);
-const SPEED_SLOW = getCorrectedSpeed(1);
+const SPEED_FAST = getCorrectedSpeed(5);
+const SPEED_SLOW = getCorrectedSpeed(2);
 
 class Player {
   private position: Position;
