@@ -10,11 +10,13 @@ class AppPhaseManager {
   private appPhase: AppPhase;
   private phaseTime: number;
   private score: number;
+  private allowPlayerControl: boolean;
 
   constructor() {
     this.appPhase = APP_PHASES.START_GAME;
     this.phaseTime = 0;
     this.score = 0;
+    this.allowPlayerControl = false;
   }
 
   getScore() {
@@ -27,6 +29,10 @@ class AppPhaseManager {
 
   getPhaseTime() {
     return this.phaseTime;
+  }
+
+  getAllowPlayerControl() {
+    return this.allowPlayerControl;
   }
 
   increasePhaseTime(time: number) {
@@ -48,17 +54,20 @@ class AppPhaseManager {
   setPhaseStartGame() {
     this.appPhase = APP_PHASES.START_GAME;
     this.phaseTime = 0;
+    this.allowPlayerControl = false;
   }
 
   setPhasePlaying() {
     this.appPhase = APP_PHASES.PLAYING;
     this.phaseTime = 0;
     this.score = 0;
+    this.allowPlayerControl = true;
   }
 
-  setPhaseGameOver() {
+  setPhaseGameOver(victory: boolean) {
     this.appPhase = APP_PHASES.GAME_OVER;
     this.phaseTime = 0;
+    this.allowPlayerControl = victory;
   }
 }
 

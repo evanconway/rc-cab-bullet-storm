@@ -13,14 +13,8 @@ let patternSequence = new PatternSequence();
 setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
   const normalizedUnit = getFrameTimeNormalizedNum(1);
 
-  app.increasePhaseTime(frameTime);
-  context.fillStyle = "#09FF00";
-  context.textAlign = "left";
-  context.fillText(
-    `frame time: ${frameTime}, phase time: ${app.getPhaseTime()}`,
-    8,
-    8,
-  );
+  context.font = "16px system-ui";
+
   if (app.isPhaseStartGame()) {
     context.fillStyle = "#09FF00";
     context.textAlign = "center";
@@ -65,44 +59,20 @@ setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
         (Math.max(0, 50 - closestBulletDist) * normalizedUnit) / SCORE_RATE,
       );
       if (closestBulletDist <= 0) {
-        app.setPhaseGameOver();
+        app.setPhaseGameOver(false);
       }
     }
 
     if (patternSequence.getComplete() && bulletManager.getPatternCount() <= 0) {
-      app.setPhaseGameOver();
+      app.setPhaseGameOver(true);
     }
 
     player.draw(context);
-
-    context.fillStyle = "#fff";
-    context.textAlign = "left";
-    context.fillText(
-      `score: ${app.getScore()}, bullets: ${bulletManager.getBulletCount()}, patterns: ${bulletManager.getPatternCount()}`,
-      8,
-      20,
-    );
-    context.fillText(
-      `closest bullet distance: ${bulletManager.getShortestBulletDistance(player.getPosition())}`,
-      8,
-      38,
-    );
   } else if (app.isPhaseGameOver()) {
     bulletManager.draw(context);
-
-    context.fillStyle = "#fff";
-    context.textAlign = "left";
-    context.fillText(
-      `score: ${app.getScore()}, bullets: ${bulletManager.getBulletCount()}, patterns: ${bulletManager.getPatternCount()}`,
-      8,
-      20,
-    );
-    context.fillText(
-      `closest bullet distance: ${bulletManager.getShortestBulletDistance(player.getPosition())}`,
-      8,
-      38,
-    );
-
+    if (app.getAllowPlayerControl()) {
+      player.updatePosition(normalizedUnit);
+    }
     player.draw(context);
 
     context.fillStyle = "#09FF00";
@@ -112,5 +82,20 @@ setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
     if (app.getPhaseTime() >= GAME_OVER_SCREEN_TIME) {
       app.setPhaseStartGame();
     }
+  }
+
+  app.increasePhaseTime(frameTime);
+  context.fillStyle = "#09FF00";
+  context.textAlign = "left";
+  context.fillText(
+    `frame time: ${frameTime}, phase time: ${app.getPhaseTime()}`,
+    2,
+    SCREEN.HEIGHT - 2,
+  );
+
+  if (app.isPhasePlaying() || app.isPhaseGameOver()) {
+    context.fillStyle = "#fff";
+    context.textAlign = "left";
+    context.fillText(`score: ${app.getScore()}`, 8, 16);
   }
 });
