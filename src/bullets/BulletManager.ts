@@ -42,11 +42,18 @@ class BulletManager {
     return this.patterns.size;
   }
 
-  bulletCollisionAt(position: Position) {
-    return Array.from(this.patterns.entries()).reduce(
-      (result, [, pattern]) => result || pattern.bulletCollisionAt(position),
-      false,
-    );
+  getShortestBulletDistance(position: Position) {
+    const firstPattern = this.patterns.values().next().value;
+    if (firstPattern === undefined) return null;
+    let distance = firstPattern.getShortestBulletDistance(position);
+    if (distance === null) return null;
+    for (const pattern of this.patterns.values()) {
+      const closestBulletDist = pattern.getShortestBulletDistance(position);
+      if (closestBulletDist !== null && closestBulletDist < distance) {
+        distance = closestBulletDist;
+      }
+    }
+    return Math.max(distance, 0);
   }
 
   draw(context: CanvasRenderingContext2D) {

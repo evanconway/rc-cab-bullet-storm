@@ -97,12 +97,17 @@ class Pattern {
     });
   }
 
-  bulletCollisionAt(position: Position) {
-    return Array.from(this.bullets.entries()).reduce(
-      (result, [_, bullet]) =>
-        result || dist(position, bullet.position) <= bullet.radius,
-      false,
-    );
+  getShortestBulletDistance(position: Position) {
+    const firstBullet = this.bullets.values().next().value;
+    if (firstBullet === undefined) return null;
+    let distance = dist(position, firstBullet.position) - firstBullet.radius;
+    for (const bullet of this.bullets.values()) {
+      const bulletDist = dist(position, bullet.position) - bullet.radius;
+      if (bulletDist < distance) {
+        distance = bulletDist;
+      }
+    }
+    return distance;
   }
 }
 

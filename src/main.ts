@@ -58,8 +58,18 @@ setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
     bulletManager.deletePatternsMarkedForDeletion();
     bulletManager.draw(context);
 
-    if (bulletManager.bulletCollisionAt(player.getPosition())) {
-      app.setPhaseGameOver();
+    const closestBulletDist = bulletManager.getShortestBulletDistance(
+      player.getPosition(),
+    );
+
+    if (closestBulletDist !== null) {
+      app.scoreAdd(
+        (Math.max(0, 50 - closestBulletDist) * getFrameTimeNormalizedNum(1)) /
+          100,
+      );
+      if (closestBulletDist <= 0) {
+        app.setPhaseGameOver();
+      }
     }
 
     if (patternSequence.getComplete() && bulletManager.getPatternCount() <= 0) {
@@ -71,9 +81,14 @@ setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
     context.fillStyle = "#fff";
     context.textAlign = "left";
     context.fillText(
-      `bullets: ${bulletManager.getBulletCount()}, patterns: ${bulletManager.getPatternCount()}`,
+      `score: ${app.getScore()}, bullets: ${bulletManager.getBulletCount()}, patterns: ${bulletManager.getPatternCount()}`,
       8,
-      16,
+      20,
+    );
+    context.fillText(
+      `closest bullet distance: ${bulletManager.getShortestBulletDistance(player.getPosition())}`,
+      8,
+      38,
     );
   } else if (app.isPhaseGameOver()) {
     bulletManager.draw(context);
@@ -81,9 +96,14 @@ setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
     context.fillStyle = "#fff";
     context.textAlign = "left";
     context.fillText(
-      `bullets: ${bulletManager.getBulletCount()}, patterns: ${bulletManager.getPatternCount()}`,
+      `score: ${app.getScore()}, bullets: ${bulletManager.getBulletCount()}, patterns: ${bulletManager.getPatternCount()}`,
       8,
-      16,
+      20,
+    );
+    context.fillText(
+      `closest bullet distance: ${bulletManager.getShortestBulletDistance(player.getPosition())}`,
+      8,
+      38,
     );
 
     player.draw(context);

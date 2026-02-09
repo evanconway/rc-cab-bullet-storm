@@ -9,10 +9,20 @@ const APP_PHASES = {
 class AppPhaseManager {
   private appPhase: AppPhase;
   private phaseTime: number;
+  private score: number;
 
   constructor() {
     this.appPhase = APP_PHASES.START_GAME;
     this.phaseTime = 0;
+    this.score = 0;
+  }
+
+  getScore() {
+    return Math.floor(this.score);
+  }
+
+  scoreAdd(value: number) {
+    this.score += value;
   }
 
   getPhaseTime() {
@@ -43,6 +53,7 @@ class AppPhaseManager {
   setPhasePlaying() {
     this.appPhase = APP_PHASES.PLAYING;
     this.phaseTime = 0;
+    this.score = 0;
   }
 
   setPhaseGameOver() {
