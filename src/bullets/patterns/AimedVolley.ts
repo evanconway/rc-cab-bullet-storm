@@ -14,6 +14,7 @@ class PatternAimedVolley extends Pattern {
   private minVel: number;
   private maxVel: number;
   private origin: Position;
+  private raidus: number;
 
   constructor({
     duration,
@@ -21,14 +22,18 @@ class PatternAimedVolley extends Pattern {
     maxVel,
     origin,
     frequency,
+    fillStyle,
+    radius,
   }: {
     duration: number;
     minVel: number;
     maxVel?: number;
     origin: Position;
     frequency: number;
+    fillStyle: string;
+    radius?: number;
   }) {
-    super();
+    super(fillStyle);
     this.totalTime = duration;
     this.time = 0;
     this.frequency = frequency;
@@ -36,6 +41,7 @@ class PatternAimedVolley extends Pattern {
     this.minVel = minVel;
     this.maxVel = maxVel ?? minVel;
     this.origin = origin;
+    this.raidus = radius ?? 5;
   }
 
   update(frameTime: number, unit: number, target: Position): void {
@@ -56,10 +62,11 @@ class PatternAimedVolley extends Pattern {
       const speed = Math.random() * (this.maxVel - this.minVel) + this.minVel;
 
       const bullet: AimedBullet = {
-        radius: 5,
+        radius: this.raidus,
         position: { ...this.origin },
         velocity: { x: unitVectorX * speed, y: unitVectorY * speed },
         hasEnteredScreen: false,
+        fillStyle: this.bulletFillStyle,
       };
       this.addBullet(bullet);
     }
@@ -81,15 +88,6 @@ class PatternAimedVolley extends Pattern {
 
   canDelete(): boolean {
     return this.time >= this.totalTime && this.bullets.size <= 0;
-  }
-
-  draw(ctx: CanvasRenderingContext2D) {
-    ctx.strokeStyle = "#f00";
-    this.bullets.forEach((b) => {
-      ctx.beginPath();
-      ctx.arc(b.position.x, b.position.y, b.radius, 0, Math.PI * 2, true);
-      ctx.stroke();
-    });
   }
 }
 

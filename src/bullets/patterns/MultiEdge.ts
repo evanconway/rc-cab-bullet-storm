@@ -27,28 +27,34 @@ class PatternMultiEdge extends Pattern {
   private generateTime: number;
   private radius: number;
   private speed: number;
+  private aimed: boolean;
 
   constructor({
     duration,
     frequency,
     radius,
     speed,
+    aimed,
+    fillStyle,
   }: {
     duration: number;
     frequency: number;
     radius: number;
     speed: number;
+    aimed?: boolean;
+    fillStyle: string;
   }) {
-    super();
+    super(fillStyle);
     this.time = 0;
     this.duration = duration;
     this.frequency = frequency;
     this.generateTime = 0;
     this.radius = radius;
     this.speed = speed;
+    this.aimed = aimed ?? false;
   }
 
-  update(frameTime: number, unit: number): void {
+  update(frameTime: number, unit: number, playerPosition: Position): void {
     this.time += frameTime;
     this.generateTime += frameTime;
     while (this.time <= this.duration && this.generateTime >= this.frequency) {
@@ -59,18 +65,21 @@ class PatternMultiEdge extends Pattern {
         position: { x: 0, y: 0 },
         velocity: { x: 0, y: 0 },
         hasEnteredScreen: false,
+        fillStyle: this.bulletFillStyle,
       };
 
-      const randomTarget: Position = {
-        x:
-          SCREEN.WIDTH_CENTER +
-          Math.random() * TARGET_RANDOM_MOD -
-          TARGET_RANDOM_MOD / 2,
-        y:
-          SCREEN.HEIGHT_CENTER +
-          Math.random() * TARGET_RANDOM_MOD -
-          TARGET_RANDOM_MOD / 2,
-      };
+      const target: Position = this.aimed
+        ? { ...playerPosition }
+        : {
+            x:
+              SCREEN.WIDTH_CENTER +
+              Math.random() * TARGET_RANDOM_MOD -
+              TARGET_RANDOM_MOD / 2,
+            y:
+              SCREEN.HEIGHT_CENTER +
+              Math.random() * TARGET_RANDOM_MOD -
+              TARGET_RANDOM_MOD / 2,
+          };
 
       const edge = getRandomScreenEdge();
       if (isScreenEdgeLeft(edge)) {
@@ -92,7 +101,7 @@ class PatternMultiEdge extends Pattern {
       }
       const { unitVectorX, unitVectorY } = getUnitVectorComponents(
         newBullet.position,
-        randomTarget,
+        target,
       );
       newBullet.velocity.x = unitVectorX * this.speed;
       newBullet.velocity.y = unitVectorY * this.speed;
@@ -116,15 +125,6 @@ class PatternMultiEdge extends Pattern {
 
   canDelete(): boolean {
     return this.bullets.size <= 0 && this.time >= this.duration;
-  }
-
-  draw(ctx: CanvasRenderingContext2D) {
-    ctx.strokeStyle = "#070";
-    this.bullets.forEach((b) => {
-      ctx.beginPath();
-      ctx.arc(b.position.x, b.position.y, b.radius, 0, Math.PI * 2, true);
-      ctx.stroke();
-    });
   }
 }
 

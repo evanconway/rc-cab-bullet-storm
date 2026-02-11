@@ -1,4 +1,11 @@
-import { SCREEN } from "../../canvas";
+import {
+  isScreenEdgeBottom,
+  isScreenEdgeLeft,
+  isScreenEdgeRight,
+  isScreenEdgeTop,
+  SCREEN,
+  type ScreenEdge,
+} from "../../canvas";
 
 export interface Position {
   x: number;
@@ -6,6 +13,7 @@ export interface Position {
 }
 
 export interface Bullet {
+  fillStyle: string;
   position: Position;
   radius: number;
 }
@@ -23,16 +31,17 @@ export const bulletIsOnScreen = (bullet: Bullet) => {
   );
 };
 
-export const bulletIsOffScreen = (bullet: Bullet) => {
+export const bulletIsOffScreen = (bullet: Bullet, extraBuffer = 0) => {
   const {
     position: { x, y },
     radius,
   } = bullet;
+  const usedDist = radius + extraBuffer;
   return (
-    x < 0 - radius ||
-    x > SCREEN.WIDTH + radius ||
-    y < 0 - radius ||
-    y > SCREEN.HEIGHT + radius
+    x < 0 - usedDist ||
+    x > SCREEN.WIDTH + usedDist ||
+    y < 0 - usedDist ||
+    y > SCREEN.HEIGHT + usedDist
   );
 };
 
@@ -46,6 +55,28 @@ export const getUnitVectorComponents = (origin: Position, target: Position) => {
   };
 };
 
+export const getRandomPositionOffScreenEdge = (
+  edge: ScreenEdge,
+  radius: number,
+): Position => {
+  if (isScreenEdgeLeft(edge)) {
+    // left
+    return { x: radius * -1, y: Math.random() * SCREEN.HEIGHT };
+  } else if (isScreenEdgeRight(edge)) {
+    // right
+    return {
+      x: SCREEN.WIDTH + radius,
+      y: Math.random() * SCREEN.HEIGHT,
+    };
+  } else if (isScreenEdgeTop(edge)) {
+    // top
+    return { x: Math.random() * SCREEN.WIDTH, y: radius * -1 };
+  } else {
+    // bottom
+    return { x: Math.random() * SCREEN.WIDTH, y: SCREEN.HEIGHT + radius };
+  }
+};
+
 const dist = (positionA: Position, positionB: Position) =>
   Math.sqrt(
     Math.pow(positionA.x - positionB.x, 2) +
@@ -55,10 +86,12 @@ const dist = (positionA: Position, positionB: Position) =>
 class Pattern {
   private bulletId: number;
   protected bullets: Map<number, Bullet>;
+  protected bulletFillStyle: string;
 
-  constructor() {
+  constructor(fillStyle: string) {
     this.bulletId = 0;
     this.bullets = new Map();
+    this.bulletFillStyle = fillStyle;
   }
 
   protected addBullet(bullet: Bullet) {
@@ -89,8 +122,8 @@ class Pattern {
   }
 
   draw(ctx: CanvasRenderingContext2D) {
-    ctx.strokeStyle = "#f00";
     this.bullets.forEach((b) => {
+      ctx.strokeStyle = b.fillStyle;
       ctx.beginPath();
       ctx.arc(b.position.x, b.position.y, b.radius, 0, Math.PI * 2, true);
       ctx.stroke();

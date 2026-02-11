@@ -33,6 +33,7 @@ class PatternFixedLines extends Pattern {
     speed,
     radius,
     edge,
+    fillStyle,
   }: {
     duration: number;
     rowSpacing: number;
@@ -41,8 +42,9 @@ class PatternFixedLines extends Pattern {
     speed: number;
     radius: number;
     edge: ScreenEdge;
+    fillStyle: string;
   }) {
-    super();
+    super(fillStyle);
     this.duration = duration;
     this.rowSpacing = rowSpacing;
     this.offset = offset;
@@ -69,6 +71,7 @@ class PatternFixedLines extends Pattern {
             position: { x: bulletX, y: 0 - this.radius },
             velocity: { x: 0, y: this.speed },
             radius: this.radius,
+            fillStyle: this.bulletFillStyle,
           };
           this.addBullet(newBullet);
           bulletX += this.rowSpacing;
@@ -83,6 +86,7 @@ class PatternFixedLines extends Pattern {
             position: { x: bulletX, y: SCREEN.HEIGHT + this.radius },
             velocity: { x: 0, y: this.speed * -1 },
             radius: this.radius,
+            fillStyle: this.bulletFillStyle,
           };
           this.addBullet(newBullet);
           bulletX += this.rowSpacing;
@@ -97,6 +101,7 @@ class PatternFixedLines extends Pattern {
             position: { x: 0 - this.radius, y: bulletY },
             velocity: { x: this.speed, y: 0 },
             radius: this.radius,
+            fillStyle: this.bulletFillStyle,
           };
           this.addBullet(newBullet);
           bulletY += this.rowSpacing;
@@ -111,6 +116,7 @@ class PatternFixedLines extends Pattern {
             position: { x: SCREEN.WIDTH + this.radius, y: bulletY },
             velocity: { x: this.speed * -1, y: 0 },
             radius: this.radius,
+            fillStyle: this.bulletFillStyle,
           };
           this.addBullet(newBullet);
           bulletY += this.rowSpacing;

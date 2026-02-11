@@ -12,14 +12,16 @@ class PatternBurst extends Pattern {
     radius,
     numOfBullets,
     offset,
+    fillStyle,
   }: {
     origin: Position;
     speed: number;
     radius: number;
     numOfBullets: number;
     offset?: number; // in radians;
+    fillStyle: string;
   }) {
-    super();
+    super(fillStyle);
     const radians = (2 * Math.PI) / numOfBullets;
     const firstRadian = offset ?? 0;
 
@@ -33,6 +35,7 @@ class PatternBurst extends Pattern {
           x: xVecComponent * speed,
           y: yVecComponent * speed,
         },
+        fillStyle: this.bulletFillStyle,
       };
       this.addBullet(bullet);
     }
@@ -43,7 +46,7 @@ class PatternBurst extends Pattern {
       const single = bullet as PatternBullet;
       single.position.x += single.velocity.x * unit;
       single.position.y += single.velocity.y * unit;
-      if (bulletIsOffScreen(single)) {
+      if (bulletIsOffScreen(single, single.radius)) {
         this.removeBullet(id);
       }
     });
@@ -51,15 +54,6 @@ class PatternBurst extends Pattern {
 
   canDelete(): boolean {
     return this.bullets.size <= 0;
-  }
-
-  draw(ctx: CanvasRenderingContext2D) {
-    ctx.strokeStyle = "#f0f";
-    this.bullets.forEach((b) => {
-      ctx.beginPath();
-      ctx.arc(b.position.x, b.position.y, b.radius, 0, Math.PI * 2, true);
-      ctx.stroke();
-    });
   }
 }
 

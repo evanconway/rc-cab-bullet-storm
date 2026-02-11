@@ -14,13 +14,15 @@ class PatternSingle extends Pattern {
     origin,
     speed,
     radius,
+    fillStyle,
   }: {
     target: Position;
     origin: Position;
     speed: number;
     radius: number;
+    fillStyle: string;
   }) {
-    super();
+    super(fillStyle);
     this.origin = origin;
 
     const rawVelX = target.x - this.origin.x;
@@ -34,6 +36,7 @@ class PatternSingle extends Pattern {
       position: { ...this.origin },
       velocity: { x: unitVectorX * speed, y: unitVectorY * speed },
       hasEnteredScreen: false,
+      fillStyle: this.bulletFillStyle,
     };
     this.addBullet(bullet);
   }
@@ -56,15 +59,6 @@ class PatternSingle extends Pattern {
 
   canDelete(): boolean {
     return this.bullets.size <= 0;
-  }
-
-  draw(ctx: CanvasRenderingContext2D) {
-    ctx.strokeStyle = "#070";
-    this.bullets.forEach((b) => {
-      ctx.beginPath();
-      ctx.arc(b.position.x, b.position.y, b.radius, 0, Math.PI * 2, true);
-      ctx.stroke();
-    });
   }
 }
 

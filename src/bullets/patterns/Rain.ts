@@ -15,25 +15,35 @@ class PatternRain extends Pattern {
   private generateTime: number;
   private minRainVel: number;
   private maxRainVel: number;
+  private rainXOffset: number;
+  private radius: number;
 
   constructor({
     duration,
     minVel,
     maxVel,
     generateInterval,
+    fillStyle,
+    variation,
+    radius,
   }: {
     duration: number;
     minVel: number;
     maxVel?: number;
     generateInterval: number;
+    fillStyle: string;
+    variation?: number;
+    radius?: number;
   }) {
-    super();
+    super(fillStyle);
     this.totalTime = duration;
     this.time = 0;
     this.generateInterval = generateInterval;
     this.generateTime = 0;
     this.minRainVel = minVel;
     this.maxRainVel = maxVel ?? minVel;
+    this.rainXOffset = variation ?? RAIN_X_OFFSET;
+    this.radius = radius ?? 5;
   }
 
   update(frameTime: number, unit: number): void {
@@ -52,7 +62,7 @@ class PatternRain extends Pattern {
       };
 
       const target: Position = {
-        x: position.x + Math.random() * RAIN_X_OFFSET - RAIN_X_OFFSET / 2,
+        x: position.x + Math.random() * this.rainXOffset - this.rainXOffset / 2,
         y: SCREEN.HEIGHT,
       };
 
@@ -68,9 +78,10 @@ class PatternRain extends Pattern {
         Math.random() * (this.maxRainVel - this.minRainVel) + this.minRainVel;
 
       const bullet: RainBullet = {
-        radius: 5,
+        radius: this.radius,
         position: { x: Math.random() * SCREEN.WIDTH, y: -30 },
         velocity: { x: unitVectorX * speed, y: unitVectorY * speed },
+        fillStyle: this.bulletFillStyle,
       };
       this.addBullet(bullet);
     }
@@ -87,15 +98,6 @@ class PatternRain extends Pattern {
 
   canDelete(): boolean {
     return this.time >= this.totalTime && this.bullets.size <= 0;
-  }
-
-  draw(ctx: CanvasRenderingContext2D) {
-    ctx.strokeStyle = "#00a";
-    this.bullets.forEach((b) => {
-      ctx.beginPath();
-      ctx.arc(b.position.x, b.position.y, b.radius, 0, Math.PI * 2, true);
-      ctx.stroke();
-    });
   }
 }
 
