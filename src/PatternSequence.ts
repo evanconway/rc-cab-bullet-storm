@@ -1,4 +1,5 @@
 import PatternAimedVolley from "./bullets/patterns/AimedVolley";
+import PatternBurst from "./bullets/patterns/Burst";
 import PatternFixedLines from "./bullets/patterns/FixedLines";
 import PatternMultiEdge from "./bullets/patterns/MultiEdge";
 import type Pattern from "./bullets/patterns/Pattern";
@@ -12,6 +13,12 @@ class PatternSequence {
   constructor() {
     this.patterns = new Map();
     this.patterns.set(100, [
+      new PatternBurst({
+        origin: { x: 0, y: 0 },
+        numOfBullets: 10,
+        speed: 1,
+        radius: 6,
+      }),
       new PatternSingle({
         origin: { x: SCREEN.WIDTH_CENTER, y: 0 - 30 },
         target: { x: SCREEN.WIDTH_CENTER, y: SCREEN.HEIGHT },
