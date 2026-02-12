@@ -119,7 +119,7 @@ class PatternSequence {
 
     // now react to me
     this.set(
-      65000,
+      66000,
       new PatternAimedVolley({
         duration: 4000,
         minVel: 2.5,
@@ -129,7 +129,7 @@ class PatternSequence {
       }),
     );
     this.set(
-      65000,
+      66000,
       new PatternAimedVolley({
         duration: 4000,
         minVel: 2.5,
@@ -139,7 +139,7 @@ class PatternSequence {
       }),
     );
     this.set(
-      65000,
+      66000,
       new PatternAimedVolley({
         duration: 4000,
         minVel: 2.5,
