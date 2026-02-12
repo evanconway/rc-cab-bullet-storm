@@ -339,7 +339,7 @@ class PatternSequence {
     this.set(
       146000,
       new PatternRain({
-        duration: 30000,
+        duration: 40000,
         minVel: 0.5,
         // maxVel: 1.1,
         frequency: 35,
@@ -352,7 +352,7 @@ class PatternSequence {
     this.set(
       154000,
       new PatternMultiEdge({
-        duration: 15000,
+        duration: 27000,
         frequency: 2400,
         radius: 35,
         speed: 0.4,

@@ -5,10 +5,12 @@ import app from "./appPhase";
 import { setGameLoop, SCREEN } from "./canvas";
 import bulletManager from "./bullets/BulletManager";
 import PatternSequence from "./PatternSequence";
+import Lives, { DEAD_STATES } from "./Lives";
 
 const GAME_OVER_SCREEN_TIME = 3000;
 const SCORE_RATE = 100; // lower is faster
 let patternSequence = new PatternSequence();
+const player1Lives = new Lives(3);
 
 setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
   const normalizedUnit = getFrameTimeNormalizedNum(1);
@@ -30,11 +32,17 @@ setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
       bulletManager.clear();
       patternSequence = new PatternSequence();
       app.setPhasePlaying();
+      player1Lives.reset();
     }
 
     player.draw(context);
   } else if (app.isPhasePlaying()) {
-    player.updatePosition(normalizedUnit);
+    if (
+      player1Lives.getState() === DEAD_STATES.ALIVE ||
+      player1Lives.getState() === DEAD_STATES.INTANGIBLE
+    ) {
+      player.updatePosition(normalizedUnit);
+    }
 
     const newPatterns = patternSequence.getPatternsPassedTime(
       app.getPhaseTime(),
@@ -54,20 +62,36 @@ setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
       player.getPosition(),
     );
 
-    if (closestBulletDist !== null) {
+    if (closestBulletDist !== null && closestBulletDist > 0) {
       app.scoreAdd(
         (Math.max(0, 50 - closestBulletDist) * normalizedUnit) / SCORE_RATE,
       );
-      if (closestBulletDist <= 0) {
-        app.setPhaseGameOver(false);
-      }
     }
 
     if (patternSequence.getComplete() && bulletManager.getPatternCount() <= 0) {
       app.setPhaseGameOver(true);
+    } else {
+      player1Lives.advanceTime(frameTime);
+      if (
+        player1Lives.getState() === DEAD_STATES.ALIVE &&
+        closestBulletDist !== null &&
+        closestBulletDist <= 0
+      ) {
+        player1Lives.startDeath();
+        if (player1Lives.getLives() <= 0) {
+          app.setPhaseGameOver(false);
+        }
+      }
     }
 
-    player.draw(context);
+    if (player1Lives.getState() === DEAD_STATES.ALIVE) {
+      player.draw(context);
+    } else if (player1Lives.getState() === DEAD_STATES.FLASH) {
+      context.fillStyle = `rgba(255, 0, 0, ${player1Lives.getFlashAlpha() * 0.7})`;
+      context.fillRect(0, 0, SCREEN.WIDTH, SCREEN.HEIGHT);
+    } else if (player1Lives.getState() === DEAD_STATES.INTANGIBLE) {
+      player.draw(context, 0.5);
+    }
   } else if (app.isPhaseGameOver()) {
     bulletManager.draw(context);
     if (app.getAllowPlayerControl()) {
@@ -96,6 +120,10 @@ setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
   if (app.isPhasePlaying() || app.isPhaseGameOver()) {
     context.fillStyle = "#fff";
     context.textAlign = "left";
-    context.fillText(`score: ${app.getScore()}`, 8, 16);
+    context.fillText(
+      `lives: ${player1Lives.getLives()}, score: ${app.getScore()}`,
+      8,
+      16,
+    );
   }
 });

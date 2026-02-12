@@ -37,8 +37,9 @@ class Player {
     );
   }
 
-  draw(context: CanvasRenderingContext2D) {
-    context.fillStyle = "#fff";
+  draw(context: CanvasRenderingContext2D, alpha?: number) {
+    const usedAlpha = alpha ?? 1;
+    context.fillStyle = `rgba(255, 255, 255, ${usedAlpha})`;
     context.beginPath();
     context.arc(this.position.x, this.position.y, 5, 0, Math.PI * 2, true);
     context.fill();
