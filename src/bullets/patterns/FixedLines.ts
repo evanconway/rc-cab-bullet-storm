@@ -37,7 +37,7 @@ class PatternFixedLines extends Pattern {
   }: {
     duration: number;
     rowSpacing: number;
-    offset: number;
+    offset?: number;
     frequency: number;
     speed: number;
     radius: number;
@@ -47,7 +47,7 @@ class PatternFixedLines extends Pattern {
     super(fillStyle);
     this.duration = duration;
     this.rowSpacing = rowSpacing;
-    this.offset = offset;
+    this.offset = offset ?? 0;
     this.frequency = frequency;
     this.speed = speed;
     this.radius = radius;

@@ -11,7 +11,7 @@ const RAIN_X_OFFSET = 40;
 class PatternRain extends Pattern {
   private totalTime: number;
   private time: number;
-  private generateInterval: number;
+  private frequency: number;
   private generateTime: number;
   private minRainVel: number;
   private maxRainVel: number;
@@ -22,7 +22,7 @@ class PatternRain extends Pattern {
     duration,
     minVel,
     maxVel,
-    generateInterval,
+    frequency,
     fillStyle,
     variation,
     radius,
@@ -30,7 +30,7 @@ class PatternRain extends Pattern {
     duration: number;
     minVel: number;
     maxVel?: number;
-    generateInterval: number;
+    frequency: number;
     fillStyle: string;
     variation?: number;
     radius?: number;
@@ -38,7 +38,7 @@ class PatternRain extends Pattern {
     super(fillStyle);
     this.totalTime = duration;
     this.time = 0;
-    this.generateInterval = generateInterval;
+    this.frequency = frequency;
     this.generateTime = 0;
     this.minRainVel = minVel;
     this.maxRainVel = maxVel ?? minVel;
@@ -50,11 +50,8 @@ class PatternRain extends Pattern {
     this.time += frameTime;
     this.generateTime += frameTime;
 
-    while (
-      this.time < this.totalTime &&
-      this.generateTime >= this.generateInterval
-    ) {
-      this.generateTime -= this.generateInterval;
+    while (this.time < this.totalTime && this.generateTime >= this.frequency) {
+      this.generateTime -= this.frequency;
 
       const position: Position = {
         x: Math.random() * SCREEN.WIDTH,

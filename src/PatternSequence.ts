@@ -7,7 +7,8 @@ import Pattern, {
 } from "./bullets/patterns/Pattern";
 import PatternRain from "./bullets/patterns/Rain";
 import PatternSingle from "./bullets/patterns/Single";
-import { SCREEN_EDGES, type ScreenEdge } from "./canvas";
+import PatternSingleEdge from "./bullets/patterns/SingleEdge";
+import { SCREEN, SCREEN_EDGES, type ScreenEdge } from "./canvas";
 
 class PatternSequence {
   private patterns: Map<number, Pattern[]>;
@@ -55,7 +56,7 @@ class PatternSequence {
       new PatternRain({
         duration: 20000,
         minVel: 0.5,
-        generateInterval: 1100,
+        frequency: 1100,
         fillStyle: "#00a",
         variation: 0,
         radius: 30,
@@ -98,13 +99,13 @@ class PatternSequence {
 
     // pick up the pace
     let leftOrRight: ScreenEdge = SCREEN_EDGES.LEFT;
-    for (let i = 50000; i < 65000; i += 1300) {
+    for (let i = 50000; i < 65000; i += 1200) {
       this.set(
         i,
         new PatternBurst({
           origin: getRandomPositionOffScreenEdge(leftOrRight, burstPhase1Rad),
           numOfBullets: Math.floor(Math.random() * 5 + 30),
-          speed: 1.5 + Math.random() * 1,
+          speed: 1.5,
           radius: burstPhase1Rad,
           offset: Math.random() * 2 * Math.PI,
           fillStyle: "#FF00E1",
@@ -127,6 +128,26 @@ class PatternSequence {
         origin: getRandomPositionOffScreenEdge(SCREEN_EDGES.TOP, 5),
       }),
     );
+    this.set(
+      65000,
+      new PatternAimedVolley({
+        duration: 4000,
+        minVel: 2.5,
+        frequency: 600,
+        fillStyle: "#f00",
+        origin: getRandomPositionOffScreenEdge(SCREEN_EDGES.LEFT, 5),
+      }),
+    );
+    this.set(
+      65000,
+      new PatternAimedVolley({
+        duration: 4000,
+        minVel: 2.5,
+        frequency: 600,
+        fillStyle: "#f00",
+        origin: getRandomPositionOffScreenEdge(SCREEN_EDGES.RIGHT, 5),
+      }),
+    );
     // accelerate
     this.set(
       69000,
@@ -139,13 +160,43 @@ class PatternSequence {
       }),
     );
     this.set(
+      69000,
+      new PatternAimedVolley({
+        duration: 3000,
+        minVel: 2.5,
+        frequency: 400,
+        fillStyle: "#f00",
+        origin: getRandomPositionOffScreenEdge(SCREEN_EDGES.LEFT, 5),
+      }),
+    );
+    this.set(
+      69000,
+      new PatternAimedVolley({
+        duration: 3000,
+        minVel: 2.5,
+        frequency: 400,
+        fillStyle: "#f00",
+        origin: getRandomPositionOffScreenEdge(SCREEN_EDGES.RIGHT, 5),
+      }),
+    );
+    this.set(
       72000,
       new PatternAimedVolley({
         duration: 3000,
         minVel: 2.5,
         frequency: 200,
         fillStyle: "#f00",
-        origin: getRandomPositionOffScreenEdge(SCREEN_EDGES.TOP, 5),
+        origin: getRandomPositionOffScreenEdge(SCREEN_EDGES.LEFT, 5),
+      }),
+    );
+    this.set(
+      72000,
+      new PatternAimedVolley({
+        duration: 3000,
+        minVel: 2.5,
+        frequency: 200,
+        fillStyle: "#f00",
+        origin: getRandomPositionOffScreenEdge(SCREEN_EDGES.RIGHT, 5),
       }),
     );
 
@@ -207,6 +258,107 @@ class PatternSequence {
         }),
       );
     }
+
+    // more guns from below, but big single shots
+    this.set(
+      103000,
+      new PatternSingleEdge({
+        duration: 13000,
+        frequency: 800,
+        radius: 15,
+        fillStyle: "#FF721A",
+        speed: 2.7,
+        aimed: true,
+        edge: SCREEN_EDGES.BOTTOM,
+      }),
+    );
+
+    // now lock 'em in place
+    for (const edge of [SCREEN_EDGES.BOTTOM, SCREEN_EDGES.RIGHT]) {
+      this.set(
+        112000,
+        new PatternFixedLines({
+          duration: 10000,
+          rowSpacing: SCREEN.WIDTH / 4,
+          frequency: 600,
+          speed: 0.5,
+          radius: 4,
+          edge,
+          fillStyle: "#1AFFE4",
+        }),
+      );
+    }
+
+    // let's see you dodge those guns in a cage...
+    this.set(
+      115000,
+      new PatternMultiEdge({
+        duration: 30000,
+        frequency: 800,
+        radius: 8,
+        fillStyle: "#FF721A",
+        speed: 2.3,
+        aimed: true,
+      }),
+    );
+
+    // another cage
+    for (const edge of [SCREEN_EDGES.TOP, SCREEN_EDGES.LEFT]) {
+      this.set(
+        122000,
+        new PatternFixedLines({
+          duration: 10000,
+          rowSpacing: SCREEN.WIDTH / 5,
+          frequency: 600,
+          speed: 0.5,
+          radius: 4,
+          edge,
+          fillStyle: "#1AFFE4",
+          offset: Math.random() * (SCREEN.WIDTH / 5),
+        }),
+      );
+    }
+    // and another
+    for (const edge of [SCREEN_EDGES.TOP, SCREEN_EDGES.LEFT]) {
+      this.set(
+        132000,
+        new PatternFixedLines({
+          duration: 10000,
+          rowSpacing: SCREEN.WIDTH / 6,
+          frequency: 600,
+          speed: 0.5,
+          radius: 4,
+          edge,
+          fillStyle: "#1AFFE4",
+          offset: Math.random() * (SCREEN.WIDTH / 5),
+        }),
+      );
+    }
+
+    // now the rain
+    this.set(
+      146000,
+      new PatternRain({
+        duration: 30000,
+        minVel: 0.5,
+        // maxVel: 1.1,
+        frequency: 35,
+        fillStyle: "#00b",
+        radius: 4,
+      }),
+    );
+
+    // remember the danger
+    this.set(
+      154000,
+      new PatternMultiEdge({
+        duration: 15000,
+        frequency: 2400,
+        radius: 35,
+        speed: 0.4,
+        fillStyle: "#070",
+      }),
+    );
   }
 
   /**
