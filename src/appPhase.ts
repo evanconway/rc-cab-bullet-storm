@@ -1,3 +1,21 @@
+import music from "./assets/music.wav";
+
+const audioContext = new AudioContext();
+const musicStateSound = new Audio();
+musicStateSound.src = music;
+const musicStateTrack = audioContext.createMediaElementSource(musicStateSound);
+musicStateTrack.connect(audioContext.destination);
+musicStateSound.load();
+
+const musicPlay = async () => {
+  await musicStateSound.play();
+};
+
+const musicStop = () => {
+  musicStateSound.pause();
+  musicStateSound.currentTime = 0;
+};
+
 type AppPhase = 0 | 1 | 2;
 
 const APP_PHASES = {
@@ -62,12 +80,14 @@ class AppPhaseManager {
     this.phaseTime = 0;
     this.score = 0;
     this.allowPlayerControl = true;
+    musicPlay();
   }
 
   setPhaseGameOver(victory: boolean) {
     this.appPhase = APP_PHASES.GAME_OVER;
     this.phaseTime = 0;
     this.allowPlayerControl = victory;
+    musicStop();
   }
 }
 
