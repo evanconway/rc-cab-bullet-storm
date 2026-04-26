@@ -1,8 +1,7 @@
 import music from "./assets/music.wav";
 
 const audioContext = new AudioContext();
-const musicStateSound = new Audio();
-musicStateSound.src = music;
+const musicStateSound = new Audio(music);
 const musicStateTrack = audioContext.createMediaElementSource(musicStateSound);
 musicStateTrack.connect(audioContext.destination);
 musicStateSound.load();
