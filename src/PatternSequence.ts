@@ -291,7 +291,7 @@ class PatternSequence {
 
     // now the rain
     this.set(
-      112000,
+      110000,
       new PatternRain({
         duration: 35000,
         minVel: 0.5,
@@ -304,13 +304,26 @@ class PatternSequence {
 
     // remember the danger
     this.set(
-      112000,
+      120000,
       new PatternMultiEdge({
-        duration: 35000,
+        duration: 25000,
         frequency: 2400,
-        radius: 35,
-        speed: 0.4,
+        radius: 22,
+        speed: 0.6,
         fillStyle: "#070",
+      }),
+    );
+
+    // blood rain
+    this.set(
+      133000,
+      new PatternRain({
+        duration: 13000,
+        minVel: 0.7,
+        // maxVel: 1.1,
+        frequency: 100,
+        fillStyle: "#900",
+        radius: 4,
       }),
     );
   }
