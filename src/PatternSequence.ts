@@ -27,22 +27,22 @@ class PatternSequence {
 
     // show them the danger
     this.set(
-      1000,
+      0,
       new PatternMultiEdge({
-        duration: 15000,
-        frequency: 1200,
+        duration: 16000,
+        frequency: 800,
         radius: 6,
-        speed: 0.8,
+        speed: 0.9,
         fillStyle: "#070",
       }),
     );
 
     // make 'em dodge
     this.set(
-      7000,
+      5500,
       new PatternMultiEdge({
-        duration: 8000,
-        frequency: 2500,
+        duration: 12000,
+        frequency: 1000,
         radius: 6,
         speed: 1.5,
         aimed: true,
@@ -52,11 +52,11 @@ class PatternSequence {
 
     // big rain
     this.set(
-      15000,
+      12000,
       new PatternRain({
-        duration: 20000,
-        minVel: 0.5,
-        frequency: 1100,
+        duration: 25000,
+        minVel: 0.7,
+        frequency: 800,
         fillStyle: "#00a",
         variation: 0,
         radius: 30,
@@ -64,7 +64,7 @@ class PatternSequence {
     );
 
     // then gunners from below
-    for (let i = 20000; i < 35000; i += 2100) {
+    for (let i = 20000; i < 40000; i += 2100) {
       this.set(
         i,
         new PatternAimedVolley({
@@ -80,7 +80,7 @@ class PatternSequence {
     const burstPhase1Rad = 8;
 
     // bursts from the sides
-    for (let i = 40000; i < 48000; i += 1700) {
+    for (let i = 41000; i < 47000; i += 1700) {
       this.set(
         i,
         new PatternBurst({
@@ -99,7 +99,7 @@ class PatternSequence {
 
     // pick up the pace
     let leftOrRight: ScreenEdge = SCREEN_EDGES.LEFT;
-    for (let i = 50000; i < 65000; i += 1200) {
+    for (let i = 48000; i < 62000; i += 900) {
       this.set(
         i,
         new PatternBurst({
@@ -119,9 +119,9 @@ class PatternSequence {
 
     // now react to me
     this.set(
-      66000,
+      62000,
       new PatternAimedVolley({
-        duration: 4000,
+        duration: 7000,
         minVel: 2.5,
         frequency: 600,
         fillStyle: "#f00",
@@ -129,9 +129,9 @@ class PatternSequence {
       }),
     );
     this.set(
-      66000,
+      62000,
       new PatternAimedVolley({
-        duration: 4000,
+        duration: 7000,
         minVel: 2.5,
         frequency: 600,
         fillStyle: "#f00",
@@ -139,9 +139,9 @@ class PatternSequence {
       }),
     );
     this.set(
-      66000,
+      62000,
       new PatternAimedVolley({
-        duration: 4000,
+        duration: 7000,
         minVel: 2.5,
         frequency: 600,
         fillStyle: "#f00",
@@ -200,11 +200,41 @@ class PatternSequence {
       }),
     );
 
+    // now lock 'em in place
+    for (const edge of [SCREEN_EDGES.BOTTOM, SCREEN_EDGES.RIGHT]) {
+      this.set(
+        75000,
+        new PatternFixedLines({
+          duration: 12000,
+          rowSpacing: SCREEN.WIDTH / 4,
+          frequency: 600,
+          speed: 0.5,
+          radius: 4,
+          edge,
+          fillStyle: "#1AFFE4",
+        }),
+      );
+    }
+
+    // more guns from below, but big single shots
+    this.set(
+      75000,
+      new PatternSingleEdge({
+        duration: 12000,
+        frequency: 1000,
+        radius: 10,
+        fillStyle: "#FF721A",
+        speed: 2.4,
+        aimed: true,
+        edge: SCREEN_EDGES.BOTTOM,
+      }),
+    );
+
     // fill it with gold
     const burstPhase2Rad = 4;
     const burstPhase2Speed = 0.3;
     const burstPhase2Count = 30;
-    for (let i = 75000; i < 95000; i += 2500) {
+    for (let i = 89000; i < 105000; i += 2500) {
       this.set(
         i,
         new PatternBurst({
@@ -265,7 +295,7 @@ class PatternSequence {
       new PatternSingleEdge({
         duration: 13000,
         frequency: 800,
-        radius: 15,
+        radius: 10,
         fillStyle: "#FF721A",
         speed: 2.7,
         aimed: true,
