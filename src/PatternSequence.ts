@@ -220,7 +220,7 @@ class PatternSequence {
     this.set(
       75000,
       new PatternSingleEdge({
-        duration: 12000,
+        duration: 13000,
         frequency: 1000,
         radius: 10,
         fillStyle: "#FF721A",
@@ -289,87 +289,11 @@ class PatternSequence {
       );
     }
 
-    // more guns from below, but big single shots
-    this.set(
-      103000,
-      new PatternSingleEdge({
-        duration: 13000,
-        frequency: 800,
-        radius: 10,
-        fillStyle: "#FF721A",
-        speed: 2.7,
-        aimed: true,
-        edge: SCREEN_EDGES.BOTTOM,
-      }),
-    );
-
-    // now lock 'em in place
-    for (const edge of [SCREEN_EDGES.BOTTOM, SCREEN_EDGES.RIGHT]) {
-      this.set(
-        112000,
-        new PatternFixedLines({
-          duration: 10000,
-          rowSpacing: SCREEN.WIDTH / 4,
-          frequency: 600,
-          speed: 0.5,
-          radius: 4,
-          edge,
-          fillStyle: "#1AFFE4",
-        }),
-      );
-    }
-
-    // let's see you dodge those guns in a cage...
-    this.set(
-      115000,
-      new PatternMultiEdge({
-        duration: 30000,
-        frequency: 800,
-        radius: 8,
-        fillStyle: "#FF721A",
-        speed: 2.3,
-        aimed: true,
-      }),
-    );
-
-    // another cage
-    for (const edge of [SCREEN_EDGES.TOP, SCREEN_EDGES.LEFT]) {
-      this.set(
-        122000,
-        new PatternFixedLines({
-          duration: 10000,
-          rowSpacing: SCREEN.WIDTH / 5,
-          frequency: 600,
-          speed: 0.5,
-          radius: 4,
-          edge,
-          fillStyle: "#1AFFE4",
-          offset: Math.random() * (SCREEN.WIDTH / 5),
-        }),
-      );
-    }
-    // and another
-    for (const edge of [SCREEN_EDGES.TOP, SCREEN_EDGES.LEFT]) {
-      this.set(
-        132000,
-        new PatternFixedLines({
-          duration: 10000,
-          rowSpacing: SCREEN.WIDTH / 6,
-          frequency: 600,
-          speed: 0.5,
-          radius: 4,
-          edge,
-          fillStyle: "#1AFFE4",
-          offset: Math.random() * (SCREEN.WIDTH / 5),
-        }),
-      );
-    }
-
     // now the rain
     this.set(
-      146000,
+      112000,
       new PatternRain({
-        duration: 40000,
+        duration: 35000,
         minVel: 0.5,
         // maxVel: 1.1,
         frequency: 35,
@@ -380,9 +304,9 @@ class PatternSequence {
 
     // remember the danger
     this.set(
-      154000,
+      112000,
       new PatternMultiEdge({
-        duration: 27000,
+        duration: 35000,
         frequency: 2400,
         radius: 35,
         speed: 0.4,
