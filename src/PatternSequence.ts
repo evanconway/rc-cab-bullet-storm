@@ -293,7 +293,7 @@ class PatternSequence {
     this.set(
       110000,
       new PatternRain({
-        duration: 35000,
+        duration: 36000,
         minVel: 0.5,
         // maxVel: 1.1,
         frequency: 35,
@@ -318,7 +318,7 @@ class PatternSequence {
     this.set(
       133000,
       new PatternRain({
-        duration: 13000,
+        duration: 14000,
         minVel: 0.7,
         // maxVel: 1.1,
         frequency: 100,
