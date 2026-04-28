@@ -304,7 +304,7 @@ class PatternSequence {
 
     // remember the danger
     this.set(
-      120000,
+      117000,
       new PatternMultiEdge({
         duration: 25000,
         frequency: 2400,
