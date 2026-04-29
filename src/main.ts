@@ -18,6 +18,9 @@ setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
   context.font = "16px system-ui";
 
   if (app.isPhaseStartGame()) {
+    // draw start game text
+    context.globalAlpha =
+      ((Math.sin(app.getPhaseTime() / 500) + 1) / 2) * 0.7 + 0.3;
     context.fillStyle = "#09FF00";
     context.textAlign = "center";
     context.fillText(
@@ -25,6 +28,34 @@ setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
       SCREEN.WIDTH_CENTER,
       SCREEN.HEIGHT * 0.3,
     );
+    context.globalAlpha = 1;
+    context.fillStyle = "#FFFFFF";
+
+    const modPhaseTime = app.getPhaseTime() % 12000;
+    if (modPhaseTime < 4000) {
+      context.fillText(
+        "Score rises when closer to bullets.",
+        SCREEN.WIDTH_CENTER,
+        SCREEN.HEIGHT * 0.5,
+      );
+    } else if (modPhaseTime < 8000) {
+      context.fillText(
+        "Touch a bullet, lose a life.",
+        SCREEN.WIDTH_CENTER,
+        SCREEN.HEIGHT * 0.5,
+      );
+    } else if (modPhaseTime < 12000) {
+      context.fillText(
+        "Use control stick to move.",
+        SCREEN.WIDTH_CENTER,
+        SCREEN.HEIGHT * 0.5,
+      );
+      context.fillText(
+        "Hold A button to move more precisely.",
+        SCREEN.WIDTH_CENTER,
+        SCREEN.HEIGHT * 0.6,
+      );
+    }
 
     player.setPosition({ x: SCREEN.WIDTH_CENTER, y: SCREEN.HEIGHT_CENTER });
 
@@ -35,7 +66,7 @@ setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
       player1Lives.reset();
     }
 
-    player.draw(context);
+    // player.draw(context);
   } else if (app.isPhasePlaying()) {
     if (
       player1Lives.getState() === DEAD_STATES.ALIVE ||
