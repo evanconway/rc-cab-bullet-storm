@@ -56,7 +56,7 @@ class PatternSequence {
       new PatternRain({
         duration: 25000,
         minVel: 0.7,
-        frequency: 800,
+        frequency: 600,
         fillStyle: "#00a",
         variation: 0,
         radius: 30,
@@ -64,7 +64,7 @@ class PatternSequence {
     );
 
     // then gunners from below
-    for (let i = 20000; i < 40000; i += 2100) {
+    for (let i = 20000; i < 40000; i += 1700) {
       this.set(
         i,
         new PatternAimedVolley({

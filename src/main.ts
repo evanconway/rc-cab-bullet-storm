@@ -51,7 +51,7 @@ setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
         SCREEN.HEIGHT * 0.5,
       );
       context.fillText(
-        "Hold A button to move more precisely.",
+        "Hold A button to move precisely.",
         SCREEN.WIDTH_CENTER,
         SCREEN.HEIGHT * 0.6,
       );
@@ -140,21 +140,23 @@ setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
   }
 
   app.increasePhaseTime(frameTime);
-  context.fillStyle = "#09FF00";
-  context.textAlign = "left";
-  context.fillText(
-    `frame time: ${frameTime}, phase time: ${app.getPhaseTime()}`,
-    2,
-    SCREEN.HEIGHT - 2,
-  );
+  if (import.meta.env.DEV) {
+    context.fillStyle = "#09FF00";
+    context.textAlign = "left";
+    context.fillText(
+      `frame time: ${frameTime}, phase time: ${app.getPhaseTime()}`,
+      2,
+      SCREEN.HEIGHT - 2,
+    );
+  }
 
   if (app.isPhasePlaying() || app.isPhaseGameOver()) {
     context.fillStyle = "#fff";
     context.textAlign = "left";
     context.fillText(
       `lives: ${player1Lives.getLives()}, score: ${app.getScore()}`,
-      8,
-      16,
+      12,
+      24,
     );
   }
 });
