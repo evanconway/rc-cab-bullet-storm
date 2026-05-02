@@ -51,7 +51,7 @@ setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
         SCREEN.HEIGHT * 0.5,
       );
       context.fillText(
-        "Hold A button to move precisely.",
+        "Hold either button to move precisely.",
         SCREEN.WIDTH_CENTER,
         SCREEN.HEIGHT * 0.6,
       );
