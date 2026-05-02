@@ -22,7 +22,7 @@ class Player {
   }
 
   updatePosition(unit: number) {
-    const speed = (PLAYER_1.A ? SPEED_SLOW : SPEED_FAST) * unit;
+    const speed = (PLAYER_1.A || PLAYER_1.B ? SPEED_SLOW : SPEED_FAST) * unit;
     if (PLAYER_1.DPAD.up) this.position.y -= speed;
     if (PLAYER_1.DPAD.down) this.position.y += speed;
     if (PLAYER_1.DPAD.left) this.position.x -= speed;
