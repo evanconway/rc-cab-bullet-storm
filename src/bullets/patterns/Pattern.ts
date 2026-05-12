@@ -121,13 +121,8 @@ class Pattern {
     return true;
   }
 
-  draw(ctx: CanvasRenderingContext2D) {
-    this.bullets.forEach((b) => {
-      ctx.strokeStyle = b.fillStyle;
-      ctx.beginPath();
-      ctx.arc(b.position.x, b.position.y, b.radius, 0, Math.PI * 2, true);
-      ctx.stroke();
-    });
+  getBullets() {
+    return this.bullets;
   }
 
   getShortestBulletDistance(position: Position) {

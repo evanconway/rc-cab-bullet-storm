@@ -10,7 +10,7 @@ import Lives, { DEAD_STATES } from "./Lives";
 const GAME_OVER_SCREEN_TIME = 3000;
 const SCORE_RATE = 100; // lower is faster
 let patternSequence = new PatternSequence();
-const player1Lives = new Lives(3);
+const player1Lives = new Lives(5);
 
 setGameLoop(({ context, getFrameTimeNormalizedNum, frameTime }) => {
   const normalizedUnit = getFrameTimeNormalizedNum(1);
