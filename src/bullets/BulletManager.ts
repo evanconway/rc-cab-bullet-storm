@@ -57,7 +57,16 @@ class BulletManager {
   }
 
   draw(context: CanvasRenderingContext2D) {
-    this.patterns.forEach((p) => p.draw(context));
+    const bullets = Array.from(this.patterns.values())
+      .map((b) => Array.from(b.getBullets().values()))
+      .flat(1)
+      .sort((a, b) => b.radius - a.radius);
+    bullets.forEach((b) => {
+      context.fillStyle = b.fillStyle;
+      context.beginPath();
+      context.arc(b.position.x, b.position.y, b.radius, 0, Math.PI * 2, true);
+      context.fill();
+    });
   }
 }
 
